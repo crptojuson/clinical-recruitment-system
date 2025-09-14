@@ -3,7 +3,7 @@
 # Git部署脚本 - 在服务器上执行
 # 使用方法：./git-deploy.sh [GitHub仓库URL]
 
-REPO_URL=${1:-"https://github.com/你的用户名/临床招募系统.git"}
+REPO_URL=${1:-"https://github.com/crptojuson/clinical-recruitment-system.git"}
 PROJECT_DIR="/var/www/clinical-recruitment"
 
 echo "🚀 开始Git部署临床招募系统..."

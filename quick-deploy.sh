@@ -4,7 +4,7 @@
 echo "🚀 GitHub快速部署..."
 
 # 克隆代码
-git clone https://github.com/你的用户名/临床招募系统.git /var/www/clinical-recruitment
+git clone https://github.com/crptojuson/clinical-recruitment-system.git /var/www/clinical-recruitment
 
 # 执行部署脚本
 cd /var/www/clinical-recruitment
