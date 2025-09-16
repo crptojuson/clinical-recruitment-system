@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { MapPin, Clock, Users, Share2, Calendar, Building, Award, Info, Heart, AlertCircle, MessageCircle, QrCode, X } from 'lucide-react';
+import { MapPin, Clock, Users, Share2, Calendar, Building, Award, Info, Heart, AlertCircle, MessageCircle, QrCode, X, List, Download } from 'lucide-react';
 import { trialsAPI } from '../services/api';
 import useAuthStore from '../stores/authStore';
 import toast from 'react-hot-toast';
+import QRCodeLib from 'qrcode';
 
 const TrialDetail = () => {
   const { id } = useParams();
@@ -12,6 +13,8 @@ const TrialDetail = () => {
   const [loading, setLoading] = useState(true);
   const [showWechatQR, setShowWechatQR] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [qrCodeDataURL, setQrCodeDataURL] = useState('');
+  const qrCodeRef = useRef(null);
   const { isAuthenticated, user, isAgent } = useAuthStore();
 
   useEffect(() => {
@@ -48,8 +51,27 @@ const TrialDetail = () => {
     navigate(`/apply/${id}`);
   };
 
-  const handleShare = () => {
-    setShowShareModal(true);
+    const handleShare = async () => {
+    try {
+      const referralCode = user.channelId || user.id;
+      const shareUrl = `${window.location.origin}/trial/${id}?ref=${referralCode}`;
+      
+      // 生成二维码
+      const qrDataURL = await QRCodeLib.toDataURL(shareUrl, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      
+      setQrCodeDataURL(qrDataURL);
+      setShowShareModal(true);
+    } catch (error) {
+      console.error('生成二维码失败:', error);
+      toast.error('生成二维码失败');
+    }
   };
 
   const copyShareLink = () => {
@@ -57,6 +79,31 @@ const TrialDetail = () => {
     const shareUrl = `${window.location.origin}/trial/${id}?ref=${referralCode}`;
     navigator.clipboard.writeText(shareUrl);
     toast.success('推荐链接已复制到剪贴板');
+  };
+
+  const saveQRCode = () => {
+    if (!qrCodeDataURL) return;
+    
+    // 创建下载链接
+    const link = document.createElement('a');
+    link.download = `试验推荐二维码-${trial?.title || id}.png`;
+    link.href = qrCodeDataURL;
+    
+    // 触发下载
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success('二维码已保存到下载文件夹');
+  };
+
+  const handleQRCodeLongPress = () => {
+    // 移动端长按保存提示
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      toast.success('长按二维码图片保存到相册', { duration: 3000 });
+    } else {
+      saveQRCode();
+    }
   };
 
   const handleWechatContact = () => {
@@ -110,8 +157,8 @@ const TrialDetail = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center">
-          <div className="loading-spinner mb-4"></div>
-          <span className="text-gray-600 text-lg">加载中...</span>
+          <div className="loading-spinner mb-2"></div>
+          <span className="text-gray-600 text-sm">加载中...</span>
         </div>
       </div>
     );
@@ -120,11 +167,11 @@ const TrialDetail = () => {
   if (!trial) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center bg-white p-12 rounded-2xl shadow-xl">
-          <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">试验项目未找到</h1>
-          <p className="text-gray-600 mb-6">抱歉，您访问的试验项目不存在或已被移除</p>
-          <Link to="/" className="btn btn-primary">
+        <div className="text-center bg-white p-6 rounded-lg shadow-md">
+          <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+          <h1 className="text-sm font-semibold text-gray-900 mb-2">试验项目未找到</h1>
+          <p className="text-gray-600 text-xs mb-3">抱歉，您访问的试验项目不存在或已被移除</p>
+          <Link to="/" className="btn btn-primary text-xs">
             返回首页
           </Link>
         </div>
@@ -134,99 +181,99 @@ const TrialDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 返回链接 */}
-        <div className="mb-8">
-          <Link 
-            to="/" 
-            className="inline-flex items-center text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors duration-200"
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* 返回试验列表按钮 */}
+        <div className="mb-6 sm:mb-8">
+          <Link
+            to="/"
+            className="inline-flex items-center text-indigo-600 hover:text-indigo-700 transition-colors p-2 -ml-2 group"
           >
-            <span className="mr-2">←</span>
-            返回试验列表
+            <List className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+            <span className="text-sm sm:text-base font-medium">返回试验列表</span>
           </Link>
         </div>
 
         {/* 试验标题和状态 */}
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-primary-600 to-primary-700 p-8 text-white">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4">
+          <div className="bg-gradient-to-r from-primary-600 to-primary-700 p-4 text-white">
             <div className="flex justify-between items-start">
               <div className="flex-1">
-                <h1 className="text-4xl font-bold mb-4 leading-tight">{trial.title}</h1>
-                <div className="flex flex-wrap gap-3">
-                  <span className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-sm font-medium">
-                    <Heart className="w-4 h-4 mr-2" />
+                <h1 className="text-base font-semibold mb-2 leading-tight">{trial.title}</h1>
+                <div className="flex flex-wrap gap-1">
+                  <span className="inline-flex items-center px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">
+                    <Heart className="w-3 h-3 mr-1" />
                     {trial.disease}
                   </span>
-                  <span className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-sm font-medium">
-                    <MapPin className="w-4 h-4 mr-2" />
+                  <span className="inline-flex items-center px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">
+                    <MapPin className="w-3 h-3 mr-1" />
                     {trial.city}
                   </span>
-                  <span className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-sm font-medium">
-                    <Users className="w-4 h-4 mr-2" />
+                  <span className="inline-flex items-center px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">
+                    <Users className="w-3 h-3 mr-1" />
                     {trial.participantType}
                   </span>
                   {trial.screeningSystem && (
-                    <span className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-sm font-medium">
-                      <Building className="w-4 h-4 mr-2" />
+                    <span className="inline-flex items-center px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">
+                      <Building className="w-3 h-3 mr-1" />
                       {trial.screeningSystem}
                     </span>
                   )}
                   {/* 状态标签 */}
                   {isTrialCompleted ? (
-                    <span className="inline-flex items-center px-4 py-2 bg-gray-500 rounded-full text-sm font-medium">
-                      <Clock className="w-4 h-4 mr-2" />
+                    <span className="inline-flex items-center px-2 py-0.5 bg-gray-500 rounded-full text-xs font-medium">
+                      <Clock className="w-3 h-3 mr-1" />
                       试验已结束
                     </span>
                   ) : isRegistrationExpired ? (
-                    <span className="inline-flex items-center px-4 py-2 bg-red-500 rounded-full text-sm font-medium">
-                      <Clock className="w-4 h-4 mr-2" />
+                    <span className="inline-flex items-center px-2 py-0.5 bg-red-500 rounded-full text-xs font-medium">
+                      <Clock className="w-3 h-3 mr-1" />
                       报名已截止
                     </span>
                   ) : trial.status === 'recruiting' ? (
-                    <span className="inline-flex items-center px-4 py-2 bg-green-500 rounded-full text-sm font-medium">
-                      <Users className="w-4 h-4 mr-2" />
+                    <span className="inline-flex items-center px-2 py-0.5 bg-green-500 rounded-full text-xs font-medium">
+                      <Users className="w-3 h-3 mr-1" />
                       正在招募
                     </span>
                   ) : null}
                 </div>
               </div>
               {isAuthenticated && trial.referralFee > 0 && (
-                <div className="text-center bg-white/20 rounded-2xl p-4 ml-6">
-                  <Award className="w-8 h-8 mx-auto mb-2" />
-                  <div className="text-2xl font-bold">¥{trial.referralFee}</div>
-                  <div className="text-sm opacity-90">推荐费</div>
+                <div className="text-center bg-yellow-100/90 text-orange-600 rounded-lg p-2 ml-3">
+                  <Award className="w-4 h-4 mx-auto mb-1 text-orange-500" />
+                  <div className="text-sm font-semibold">¥{trial.referralFee}</div>
+                  <div className="text-xs opacity-90">推荐费</div>
                 </div>
               )}
             </div>
           </div>
 
           {/* 关键信息卡片 */}
-          <div className="p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl border border-green-200">
-                <div className="flex items-center mb-3">
-                  <Award className="w-6 h-6 text-green-600 mr-2" />
-                  <span className="text-sm font-medium text-green-800">试验补贴</span>
+          <div className="p-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-4">
+              <div className="bg-gradient-to-br from-green-50 to-green-100 p-2 rounded-lg border border-green-200">
+                <div className="flex items-center mb-1">
+                  <Award className="w-3 h-3 text-green-600 mr-1" />
+                  <span className="text-xs font-medium text-green-800">试验补贴</span>
                 </div>
-                <div className="text-2xl font-bold text-green-700">¥{trial.compensation}</div>
+                <div className="text-sm font-semibold text-green-700">¥{trial.compensation}</div>
               </div>
 
-              <div className={`bg-gradient-to-br p-6 rounded-2xl border ${
+              <div className={`bg-gradient-to-br p-2 rounded-lg border ${
                 isRegistrationNotStarted
                   ? 'from-yellow-50 to-yellow-100 border-yellow-200'
                   : isRegistrationExpired 
                   ? 'from-red-50 to-red-100 border-red-200' 
                   : 'from-blue-50 to-blue-100 border-blue-200'
               }`}>
-                <div className="flex items-center mb-3">
-                  <Calendar className={`w-6 h-6 mr-2 ${
+                <div className="flex items-center mb-1">
+                  <Calendar className={`w-3 h-3 mr-1 ${
                     isRegistrationNotStarted 
                       ? 'text-yellow-600'
                       : isRegistrationExpired 
                         ? 'text-red-600' 
                         : 'text-blue-600'
                   }`} />
-                  <span className={`text-sm font-medium ${
+                  <span className={`text-xs font-medium ${
                     isRegistrationNotStarted
                       ? 'text-yellow-800'
                       : isRegistrationExpired 
@@ -236,7 +283,7 @@ const TrialDetail = () => {
                     {trial.registrationStartDate || trial.registrationDeadline ? '报名时间' : '试验周期'}
                   </span>
                 </div>
-                <div className={`space-y-1 ${
+                <div className={`space-y-0.5 ${
                   isRegistrationNotStarted
                     ? 'text-yellow-700'
                     : isRegistrationExpired 
@@ -244,56 +291,56 @@ const TrialDetail = () => {
                       : 'text-blue-700'
                 }`}>
                   {trial.registrationStartDate && (
-                    <div className="text-sm">
+                    <div className="text-xs">
                       <span className="font-medium">开始:</span> {new Date(trial.registrationStartDate).toLocaleDateString()}
                     </div>
                   )}
                   {trial.registrationDeadline && (
-                    <div className="text-sm">
+                    <div className="text-xs">
                       <span className="font-medium">截止:</span> {new Date(trial.registrationDeadline).toLocaleDateString()}
                     </div>
                   )}
                   {!trial.registrationStartDate && !trial.registrationDeadline && (
-                    <div className="text-lg font-semibold">{trial.duration}</div>
+                    <div className="text-sm font-medium">{trial.duration}</div>
                   )}
                 </div>
                 {isRegistrationNotStarted && (
-                  <div className="text-xs text-yellow-600 mt-1">尚未开始</div>
+                  <div className="text-xs text-yellow-600 mt-0.5">尚未开始</div>
                 )}
                 {isRegistrationExpired && (
-                  <div className="text-xs text-red-600 mt-1">已截止</div>
+                  <div className="text-xs text-red-600 mt-0.5">已截止</div>
                 )}
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl border border-purple-200">
-                <div className="flex items-center mb-3">
-                  <Users className="w-6 h-6 text-purple-600 mr-2" />
-                  <span className="text-sm font-medium text-purple-800">已参与人数</span>
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-2 rounded-lg border border-purple-200">
+                <div className="flex items-center mb-1">
+                  <Users className="w-3 h-3 text-purple-600 mr-1" />
+                  <span className="text-xs font-medium text-purple-800">已参与人数</span>
                 </div>
-                <div className="text-lg font-semibold text-purple-700">
+                <div className="text-sm font-medium text-purple-700">
                   {trial.currentSubjects || 0}人
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-2xl border border-orange-200">
-                <div className="flex items-center mb-3">
-                  <Building className="w-6 h-6 text-orange-600 mr-2" />
-                  <span className="text-sm font-medium text-orange-800">试验机构</span>
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-2 rounded-lg border border-orange-200">
+                <div className="flex items-center mb-1">
+                  <Building className="w-3 h-3 text-orange-600 mr-1" />
+                  <span className="text-xs font-medium text-orange-800">试验机构</span>
                 </div>
-                <div className="text-lg font-semibold text-orange-700">{trial.hospital}</div>
+                <div className="text-sm font-medium text-orange-700">{trial.hospital}</div>
                 {trial.location && (
-                  <div className="mt-2 flex items-center">
-                    <MapPin className="w-4 h-4 text-orange-600 mr-2" />
-                    <span className="text-sm text-orange-700">{trial.location}</span>
+                  <div className="mt-1 flex items-center">
+                    <MapPin className="w-3 h-3 text-orange-600 mr-1" />
+                    <span className="text-xs text-orange-700">{trial.location}</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* 试验描述 */}
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">试验介绍</h3>
-              <p className="text-gray-700 text-lg leading-relaxed">
+            <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-900 mb-2">试验介绍</h3>
+              <p className="text-gray-700 text-xs leading-relaxed">
                 {trial.description}
               </p>
             </div>
@@ -301,21 +348,21 @@ const TrialDetail = () => {
         </div>
 
         {/* 详细信息 - 单列布局 */}
-        <div className="space-y-8 mb-8">
+        <div className="space-y-4 mb-4">
           {/* 关键要点 */}
           {trial.keyPoints && trial.keyPoints.length > 0 && (
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="flex items-center mb-6">
-                <Info className="w-6 h-6 text-primary-600 mr-3" />
-                <h2 className="text-2xl font-bold text-gray-900">关键要点</h2>
+            <div className="bg-white rounded-lg shadow-md p-3">
+              <div className="flex items-center mb-3">
+                <Info className="w-3 h-3 text-primary-600 mr-2" />
+                <h2 className="text-sm font-semibold text-gray-900">关键要点</h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {trial.keyPoints.map((point, index) => (
-                  <div key={index} className="flex items-start bg-blue-50 rounded-lg p-4 border border-blue-200">
-                    <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">
+                  <div key={index} className="flex items-start bg-blue-50 rounded-lg p-2 border border-blue-200">
+                    <span className="w-4 h-4 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-medium mr-2 mt-0.5 flex-shrink-0">
                       {index + 1}
                     </span>
-                    <span className="text-gray-700 leading-relaxed">{point}</span>
+                    <span className="text-gray-700 text-xs leading-relaxed">{point}</span>
                   </div>
                 ))}
               </div>
@@ -324,36 +371,36 @@ const TrialDetail = () => {
 
           {/* 入组要求 */}
           {trial.requirements && (
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">入组要求</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-                  <h3 className="font-bold text-blue-900 mb-4 text-lg">基本条件</h3>
-                  <ul className="space-y-3 text-blue-800">
+            <div className="bg-white rounded-lg shadow-md p-3">
+              <h2 className="text-sm font-semibold text-gray-900 mb-3">入组要求</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <h3 className="font-medium text-blue-900 mb-2 text-xs">基本条件</h3>
+                  <ul className="space-y-1 text-blue-800">
                     {trial.minAge && trial.maxAge && (
-                      <li className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2" />
+                      <li className="flex items-center text-xs">
+                        <Calendar className="w-3 h-3 mr-1" />
                         年龄: {trial.minAge}-{trial.maxAge}岁
                       </li>
                     )}
                     {trial.genderRequirement && trial.genderRequirement !== '不限' && (
-                      <li className="flex items-center">
-                        <Users className="w-4 h-4 mr-2" />
+                      <li className="flex items-center text-xs">
+                        <Users className="w-3 h-3 mr-1" />
                         性别: {trial.genderRequirement}
                       </li>
                     )}
                     {trial.minBmi && trial.maxBmi && (
-                      <li className="flex items-center">
-                        <Heart className="w-4 h-4 mr-2" />
+                      <li className="flex items-center text-xs">
+                        <Heart className="w-3 h-3 mr-1" />
                         BMI: {trial.minBmi}-{trial.maxBmi}
                       </li>
                     )}
                   </ul>
                 </div>
                 
-                <div className="bg-green-50 rounded-xl p-6 border border-green-200">
-                  <h3 className="font-bold text-green-900 mb-4 text-lg">详细要求</h3>
-                  <div className="text-green-800 whitespace-pre-line leading-relaxed">
+                <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                  <h3 className="font-medium text-green-900 mb-2 text-xs">详细要求</h3>
+                  <div className="text-green-800 text-xs whitespace-pre-line leading-relaxed">
                     {trial.requirements}
                   </div>
                 </div>
@@ -363,13 +410,13 @@ const TrialDetail = () => {
 
           {/* 详情信息 */}
           {trial.exclusionCriteria && (
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="flex items-center mb-6">
-                <Info className="w-6 h-6 text-primary-600 mr-3" />
-                <h2 className="text-2xl font-bold text-gray-900">详情</h2>
+            <div className="bg-white rounded-lg shadow-md p-3">
+              <div className="flex items-center mb-3">
+                <Info className="w-3 h-3 text-primary-600 mr-2" />
+                <h2 className="text-sm font-semibold text-gray-900">详情</h2>
               </div>
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <div className="text-gray-700 whitespace-pre-line leading-relaxed">
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <div className="text-gray-700 text-xs whitespace-pre-line leading-relaxed">
                   {trial.exclusionCriteria}
                 </div>
               </div>
@@ -378,10 +425,10 @@ const TrialDetail = () => {
 
           {/* 入院说明 */}
           {trial.admissionNotes && (
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">入院说明</h2>
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <p className="text-gray-700 whitespace-pre-line leading-relaxed">
+            <div className="bg-white rounded-lg shadow-md p-3">
+              <h2 className="text-sm font-semibold text-gray-900 mb-3">入院说明</h2>
+              <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <p className="text-gray-700 text-xs whitespace-pre-line leading-relaxed">
                   {trial.admissionNotes}
                 </p>
               </div>
@@ -390,31 +437,31 @@ const TrialDetail = () => {
         </div>
 
         {/* 联系方式和操作按钮 - 放在最后 */}
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <div className="flex items-center mb-6">
-            <MessageCircle className="w-6 h-6 text-green-600 mr-3" />
-            <h2 className="text-xl font-bold text-gray-900">联系方式</h2>
+        <div className="bg-white rounded-lg shadow-md p-3">
+          <div className="flex items-center mb-3">
+            <MessageCircle className="w-3 h-3 text-green-600 mr-2" />
+            <h2 className="text-sm font-semibold text-gray-900">联系方式</h2>
           </div>
           
           {/* 微信联系 */}
-          <div className="mb-8">
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl border border-green-200 overflow-hidden">
-              <div className="flex items-center p-6">
-                <MessageCircle className="w-8 h-8 text-green-600 mr-4" />
+          <div className="mb-4">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200 overflow-hidden">
+              <div className="flex items-center p-3">
+                <MessageCircle className="w-4 h-4 text-green-600 mr-2" />
                 <div className="flex-1">
-                  <div className="text-lg font-bold text-green-800 mb-1">微信咨询</div>
-                  <div className="text-green-700 text-lg font-semibold">{trial.contactPhone}</div>
-                  <div className="text-green-600 text-sm mt-1">点击下方按钮添加微信</div>
+                  <div className="text-xs font-medium text-green-800 mb-0.5">微信咨询</div>
+                  <div className="text-green-700 text-sm font-medium">{trial.contactPhone}</div>
+                  <div className="text-green-600 text-xs mt-0.5">点击下方按钮添加微信</div>
                 </div>
-                <QrCode className="w-6 h-6 text-green-600" />
+                <QrCode className="w-3 h-3 text-green-600" />
               </div>
               
-              <div className="px-6 pb-6">
+              <div className="px-3 pb-3">
                 <button
                   onClick={handleWechatContact}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center text-xs"
                 >
-                  <MessageCircle className="w-5 h-5 mr-2" />
+                  <MessageCircle className="w-3 h-3 mr-1" />
                   添加微信咨询
                 </button>
               </div>
@@ -422,23 +469,23 @@ const TrialDetail = () => {
           </div>
 
           {/* 地址信息 */}
-          <div className="mb-8">
-            <div className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
-              <div className="p-4">
+          <div className="mb-4">
+            <div className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
+              <div className="p-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-start">
-              <MapPin className="w-5 h-5 text-primary-600 mr-3 mt-0.5" />
+              <MapPin className="w-3 h-3 text-primary-600 mr-2 mt-0.5" />
               <div>
-                      <div className="text-sm text-gray-600 font-medium mb-1">试验地址</div>
-                      <div className="text-gray-900 leading-relaxed">{trial.location || trial.hospital}</div>
+                      <div className="text-xs text-gray-600 font-medium mb-0.5">试验地址</div>
+                      <div className="text-gray-900 text-xs leading-relaxed">{trial.location || trial.hospital}</div>
                     </div>
                   </div>
                   {trial.location && (
                     <button
                       onClick={handleViewMap}
-                      className="flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors duration-200"
+                      className="flex items-center px-2 py-1 bg-primary-600 hover:bg-primary-700 text-white text-xs font-medium rounded-lg transition-colors duration-200"
                     >
-                      <MapPin className="w-4 h-4 mr-2" />
+                      <MapPin className="w-3 h-3 mr-1" />
                       查看地图
                     </button>
                   )}
@@ -448,13 +495,13 @@ const TrialDetail = () => {
           </div>
 
           {/* 操作按钮 */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button
               onClick={handleApply}
-              className={`flex-1 py-4 px-6 rounded-xl font-bold text-lg transition-all duration-200 ${
+              className={`flex-1 py-2 px-4 rounded-lg font-medium text-xs transition-all duration-200 ${
                 isTrialCompleted || isRegistrationNotStarted || isRegistrationExpired || trial.status !== 'recruiting'
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 transform hover:scale-105 shadow-lg'
+                  : 'bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 transform hover:scale-105 shadow-md'
               }`}
               disabled={isTrialCompleted || isRegistrationNotStarted || isRegistrationExpired || trial.status !== 'recruiting'}
             >
@@ -473,9 +520,9 @@ const TrialDetail = () => {
             {isAuthenticated && isAgent() && (
               <button
                 onClick={handleShare}
-                className="flex-1 sm:flex-none py-4 px-6 rounded-xl font-medium text-primary-600 border-2 border-primary-200 hover:bg-primary-50 transition-all duration-200 flex items-center justify-center"
+                className="flex-1 sm:flex-none py-2 px-4 rounded-lg font-medium text-primary-600 border border-primary-200 hover:bg-primary-50 transition-all duration-200 flex items-center justify-center text-xs"
               >
-                <Share2 className="w-4 h-4 mr-2" />
+                <Share2 className="w-3 h-3 mr-1" />
                 分享推荐
               </button>
             )}
@@ -486,29 +533,29 @@ const TrialDetail = () => {
       {/* 微信二维码弹窗 */}
       {showWechatQR && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-sm w-full relative">
+          <div className="bg-white rounded-lg p-4 max-w-sm w-full relative">
             <button
               onClick={() => setShowWechatQR(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
             >
-              <X className="w-6 h-6" />
+              <X className="w-4 h-4" />
             </button>
             
             <div className="text-center">
-              <MessageCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">扫码添加微信</h3>
-              <p className="text-gray-600 mb-6">使用微信扫描下方二维码</p>
+              <MessageCircle className="w-6 h-6 text-green-600 mx-auto mb-2" />
+              <h3 className="text-sm font-semibold text-gray-900 mb-1">扫码添加微信</h3>
+              <p className="text-gray-600 text-xs mb-3">使用微信扫描下方二维码</p>
               
               {/* 这里应该放实际的微信二维码图片 */}
-              <div className="w-48 h-48 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-32 h-32 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-2">
                 <div className="text-center">
-                  <QrCode className="w-16 h-16 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500">微信二维码</p>
-                  <p className="text-xs text-gray-400 mt-1">{trial.contactPhone}</p>
+                  <QrCode className="w-8 h-8 text-gray-400 mx-auto mb-1" />
+                  <p className="text-xs text-gray-500">微信二维码</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{trial.contactPhone}</p>
                 </div>
               </div>
               
-              <p className="text-sm text-gray-500">
+              <p className="text-xs text-gray-500">
                 长按保存图片，在微信中扫码添加
               </p>
             </div>
@@ -519,41 +566,75 @@ const TrialDetail = () => {
       {/* 分享推荐弹窗 */}
       {showShareModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full relative">
+          <div className="bg-white rounded-lg p-4 max-w-md w-full relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowShareModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 z-10"
             >
-              <X className="w-6 h-6" />
+              <X className="w-4 h-4" />
             </button>
             
             <div className="text-center">
-              <Share2 className="w-12 h-12 text-primary-600 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">分享推荐</h3>
-              <p className="text-gray-600 mb-6">分享此试验项目给朋友，他们通过您的链接报名后，您可以在个人中心查看推荐记录</p>
+              <Share2 className="w-6 h-6 text-primary-600 mx-auto mb-2" />
+              <h3 className="text-sm font-semibold text-gray-900 mb-1">分享推荐</h3>
+              <p className="text-gray-600 text-xs mb-4">分享此试验项目给朋友，他们通过您的链接报名后，您可以在个人中心查看推荐记录</p>
               
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <div className="text-sm text-gray-600 mb-2">您的推荐链接：</div>
-                <div className="bg-white border rounded-lg p-3 text-sm font-mono text-gray-800 break-all">
+              {/* 二维码区域 */}
+              {qrCodeDataURL && (
+                <div className="mb-4">
+                  <div className="text-xs text-gray-600 mb-2">扫码访问推荐链接</div>
+                  <div className="bg-white border-2 border-gray-200 rounded-lg p-3 mx-auto inline-block">
+                    <img
+                      ref={qrCodeRef}
+                      src={qrCodeDataURL}
+                      alt="推荐链接二维码"
+                      className="w-40 h-40 mx-auto cursor-pointer"
+                      onClick={handleQRCodeLongPress}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        handleQRCodeLongPress();
+                      }}
+                      style={{ imageRendering: 'pixelated' }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    点击或长按二维码保存图片
+                  </p>
+                </div>
+              )}
+              
+              {/* 链接区域 */}
+              <div className="bg-gray-50 rounded-lg p-3 mb-4">
+                <div className="text-xs text-gray-600 mb-1">您的推荐链接：</div>
+                <div className="bg-white border rounded-lg p-2 text-xs font-mono text-gray-800 break-all">
                   {`${window.location.origin}/trial/${id}?ref=${user.channelId || user.id}`}
                 </div>
               </div>
               
-              <div className="flex gap-3">
+              {/* 操作按钮 */}
+              <div className="grid grid-cols-2 gap-2 mb-2">
                 <button
                   onClick={copyShareLink}
-                  className="flex-1 py-3 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center"
+                  className="py-2 px-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center text-xs"
                 >
-                  <Share2 className="w-4 h-4 mr-2" />
+                  <Share2 className="w-3 h-3 mr-1" />
                   复制链接
                 </button>
                 <button
-                  onClick={() => setShowShareModal(false)}
-                  className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  onClick={saveQRCode}
+                  className="py-2 px-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center text-xs"
                 >
-                  关闭
+                  <Download className="w-3 h-3 mr-1" />
+                  保存二维码
                 </button>
               </div>
+              
+              <button
+                onClick={() => setShowShareModal(false)}
+                className="w-full py-2 px-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-xs"
+              >
+                关闭
+              </button>
             </div>
           </div>
         </div>

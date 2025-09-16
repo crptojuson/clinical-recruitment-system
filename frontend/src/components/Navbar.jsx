@@ -19,20 +19,20 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-12">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center p-1">
+          <Link to="/" className="flex items-center space-x-1">
+            <div className="w-6 h-6 bg-primary-600 rounded-lg flex items-center justify-center p-1">
               <img src={logoSvg} alt="Logo" className="w-full h-full" />
             </div>
-            <span className="text-xl font-bold text-gray-900">试药通</span>
+            <span className="text-sm font-bold text-gray-900">试药通</span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             <Link
               to="/"
-              className={`text-sm font-medium transition-colors ${
+              className={`text-xs font-medium transition-colors ${
                 isActive('/') 
                   ? 'text-primary-600' 
                   : 'text-gray-700 hover:text-primary-600'
@@ -43,7 +43,7 @@ const Navbar = () => {
 
             <Link
               to="/blog"
-              className={`text-sm font-medium transition-colors ${
+              className={`text-xs font-medium transition-colors ${
                 location.pathname.startsWith('/blog') 
                   ? 'text-primary-600' 
                   : 'text-gray-700 hover:text-primary-600'
@@ -56,7 +56,7 @@ const Navbar = () => {
               <>
                 <Link
                   to="/applications"
-                  className={`text-sm font-medium transition-colors ${
+                  className={`text-xs font-medium transition-colors ${
                     isActive('/applications') 
                       ? 'text-primary-600' 
                       : 'text-gray-700 hover:text-primary-600'
@@ -67,7 +67,7 @@ const Navbar = () => {
                 
                 <Link
                   to="/profile"
-                  className={`text-sm font-medium transition-colors ${
+                  className={`text-xs font-medium transition-colors ${
                     isActive('/profile') 
                       ? 'text-primary-600' 
                       : 'text-gray-700 hover:text-primary-600'
@@ -79,7 +79,7 @@ const Navbar = () => {
                 {isAdmin() && (
                   <Link
                     to="/admin"
-                    className={`text-sm font-medium transition-colors ${
+                    className={`text-xs font-medium transition-colors ${
                       location.pathname.startsWith('/admin') 
                         ? 'text-primary-600' 
                         : 'text-gray-700 hover:text-primary-600'
@@ -91,22 +91,22 @@ const Navbar = () => {
 
                 <button
                   onClick={handleLogout}
-                  className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors"
+                  className="text-xs font-medium text-gray-700 hover:text-primary-600 transition-colors"
                 >
                   退出
                 </button>
               </>
             ) : (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors"
+                  className="text-xs font-medium text-gray-700 hover:text-primary-600 transition-colors"
                 >
                   登录
                 </Link>
                 <Link
                   to="/register"
-                  className="btn btn-primary"
+                  className="btn btn-primary text-xs px-3 py-1"
                 >
                   注册
                 </Link>
@@ -117,19 +117,19 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            className="md:hidden p-1 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
           >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4 space-y-4">
+          <div className="md:hidden border-t border-gray-200 py-2 space-y-2">
             <Link
               to="/"
               onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs font-medium text-gray-700 px-2 py-1"
             >
               首页
             </Link>
@@ -137,7 +137,7 @@ const Navbar = () => {
             <Link
               to="/blog"
               onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs font-medium text-gray-700 px-2 py-1"
             >
               健康资讯
             </Link>
@@ -147,7 +147,7 @@ const Navbar = () => {
                 <Link
                   to="/applications"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-xs font-medium text-gray-700 px-2 py-1"
                 >
                   我的报名
                 </Link>
@@ -155,14 +155,14 @@ const Navbar = () => {
                 <Link
                   to="/profile"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-xs font-medium text-gray-700 px-2 py-1"
                 >
                   个人中心
                 </Link>
                 
                 <button
                   onClick={handleLogout}
-                  className="block text-sm font-medium text-danger-600"
+                  className="block text-xs font-medium text-danger-600 px-2 py-1 w-full text-left"
                 >
                   退出登录
                 </button>
@@ -172,14 +172,14 @@ const Navbar = () => {
                 <Link
                   to="/login"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-xs font-medium text-gray-700 px-2 py-1"
                 >
                   登录
                 </Link>
                 <Link
                   to="/register"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-sm font-medium text-primary-600"
+                  className="block text-xs font-medium text-primary-600 px-2 py-1"
                 >
                   注册
                 </Link>

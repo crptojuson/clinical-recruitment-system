@@ -369,78 +369,7 @@ const seedData = async () => {
     }
     console.log('示例横幅已创建');
 
-    // 创建示例博客文章
-    const articles = [
-      {
-        title: '临床试验参与者权益保护指南',
-        summary: '了解作为临床试验参与者享有的权利和保护措施，确保安全参与试验研究',
-        content: `
-          <h2>参与者权益保护的重要性</h2>
-          <p>参与临床试验是为医学进步做贡献的重要方式，但参与者的权益保护至关重要。每位参与者都应该充分了解自己的权利和保护措施。</p>
-          
-          <h3>基本权利</h3>
-          <ul>
-            <li><strong>知情权：</strong>了解试验的目的、方法、预期效果和可能的风险</li>
-            <li><strong>选择权：</strong>自由决定是否参与，随时退出而不影响治疗</li>
-            <li><strong>隐私权：</strong>个人信息和医疗数据得到严格保护</li>
-            <li><strong>补偿权：</strong>因参与试验造成的损害应得到合理补偿</li>
-          </ul>
-          
-          <h3>保护措施</h3>
-          <p>医疗机构和研究团队建立了完善的保护机制：</p>
-          <ul>
-            <li>伦理委员会审查和监督</li>
-            <li>严格的知情同意程序</li>
-            <li>专业的医疗监察</li>
-            <li>完善的保险保障</li>
-          </ul>
-        `,
-        author: '医学专家团队',
-        category: '安全指南',
-        tags: ['权益保护', '安全指南', '参与须知'],
-        featured: true,
-        isActive: true,
-        readTime: '5分钟',
-        views: 1250
-      },
-      {
-        title: '如何选择适合的临床试验',
-        summary: '详细介绍如何根据自身情况选择合适的临床试验项目，包括评估标准和注意事项',
-        content: `
-          <h2>选择试验的基本原则</h2>
-          <p>选择合适的临床试验需要综合考虑多个因素，确保既能为医学研究做贡献，又能保障自身权益。</p>
-          
-          <h3>评估标准</h3>
-          <ul>
-            <li>试验的科学性和合理性</li>
-            <li>研究机构的资质和信誉</li>
-            <li>个人健康状况的匹配度</li>
-            <li>时间和地点的便利性</li>
-          </ul>
-          
-          <h3>注意事项</h3>
-          <p>在选择试验时，需要特别关注以下几个方面：</p>
-          <ul>
-            <li>仔细阅读知情同意书</li>
-            <li>了解试验的风险和收益</li>
-            <li>确认补偿和保险条款</li>
-            <li>咨询专业医生的意见</li>
-          </ul>
-        `,
-        author: '临床研究专家',
-        category: '参与指南',
-        tags: ['试验选择', '参与指南', '注意事项'],
-        featured: false,
-        isActive: true,
-        readTime: '8分钟',
-        views: 890
-      }
-    ];
-
-    for (const articleData of articles) {
-      await Article.create(articleData);
-    }
-    console.log('示例博客文章已创建');
+    console.log('数据初始化完成');
 
   } catch (error) {
     console.error('数据初始化失败:', error);

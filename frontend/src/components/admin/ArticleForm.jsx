@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { X, Plus, Minus, Save, Eye } from 'lucide-react';
+import { X, Plus, Minus, Save, Eye, Upload } from 'lucide-react';
 import { adminAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 
@@ -10,14 +10,16 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
   const [newTag, setNewTag] = useState('');
   const [loading, setLoading] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
+  const [wordFile, setWordFile] = useState(null);
+  const [uploadMode, setUploadMode] = useState(false);
 
   const categories = [
-    '基础知识',
-    '安全指南', 
-    '法规知识',
-    '政策解读',
-    '参与指南',
-    '安全保障'
+    '临床试验科普',
+    '疾病知识',
+    '治疗方案',
+    '患者故事',
+    '医学前沿',
+    '健康生活'
   ];
 
   useEffect(() => {
@@ -44,7 +46,71 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const allowedTypes = [
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/msword'
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error('请选择Word文档文件 (.doc 或 .docx)');
+        return;
+      }
+      setWordFile(file);
+    }
+  };
+
+  const handleWordUpload = async (data) => {
+    if (!wordFile) {
+      toast.error('请选择Word文档');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('wordFile', wordFile);
+      formData.append('title', data.title);
+      formData.append('author', data.author);
+      formData.append('category', data.category);
+      formData.append('summary', data.summary || '');
+      formData.append('tags', tags.join(','));
+      formData.append('featured', data.featured === 'true');
+
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/articles/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success('Word文档上传成功！');
+        onSuccess?.();
+        onClose();
+      } else {
+        toast.error(result.message || '上传失败');
+      }
+    } catch (error) {
+      console.error('上传失败:', error);
+      toast.error('上传失败，请重试');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onSubmit = async (data) => {
+    if (uploadMode && !article) {
+      // Word文档上传模式
+      await handleWordUpload(data);
+      return;
+    }
+
     setLoading(true);
     try {
       const articleData = {
@@ -85,6 +151,20 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
             {article ? '编辑文章' : '新建文章'}
           </h2>
           <div className="flex items-center space-x-2">
+            {!article && (
+              <button
+                type="button"
+                onClick={() => setUploadMode(!uploadMode)}
+                className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                  uploadMode 
+                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                    : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                <Upload className="w-4 h-4 mr-1" />
+                {uploadMode ? 'Word上传' : '手动输入'}
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setPreviewMode(!previewMode)}
@@ -107,6 +187,37 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
             {/* 左侧：表单 */}
             <div className={`${previewMode ? 'w-1/2' : 'w-full'} p-6 overflow-y-auto border-r`}>
               <div className="space-y-6">
+                {/* Word文档上传 */}
+                {uploadMode && !article && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 className="text-lg font-medium text-blue-900 mb-3">上传Word文档</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          选择Word文档 *
+                        </label>
+                        <input
+                          type="file"
+                          accept=".doc,.docx"
+                          onChange={handleFileChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required={uploadMode}
+                        />
+                        {wordFile && (
+                          <p className="text-sm text-green-600 mt-1">
+                            已选择: {wordFile.name}
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        <p className="mb-1">• 支持 .doc 和 .docx 格式</p>
+                        <p className="mb-1">• 文档内容将自动转换为HTML格式</p>
+                        <p>• 如未填写摘要，将自动从文档内容生成</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* 基本信息 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
@@ -181,13 +292,13 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
                 {/* 文章摘要 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    文章摘要 *
+                    文章摘要 {uploadMode ? '(可选，将自动生成)' : '*'}
                   </label>
                   <textarea
-                    {...register('summary', { required: '摘要不能为空' })}
+                    {...register('summary', { required: !uploadMode ? '摘要不能为空' : false })}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    placeholder="请输入文章摘要"
+                    placeholder={uploadMode ? "可选，如不填写将自动从文档内容生成" : "请输入文章摘要"}
                   />
                   {errors.summary && (
                     <p className="text-red-500 text-sm mt-1">{errors.summary.message}</p>
@@ -236,20 +347,22 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
                 </div>
 
                 {/* 文章内容 */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    文章内容 * (支持HTML)
-                  </label>
-                  <textarea
-                    {...register('content', { required: '内容不能为空' })}
-                    rows={15}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono text-sm"
-                    placeholder="请输入文章内容，支持HTML标签"
-                  />
-                  {errors.content && (
-                    <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
-                  )}
-                </div>
+                {!uploadMode && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      文章内容 * (支持HTML)
+                    </label>
+                    <textarea
+                      {...register('content', { required: !uploadMode ? '内容不能为空' : false })}
+                      rows={15}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono text-sm"
+                      placeholder="请输入文章内容，支持HTML标签"
+                    />
+                    {errors.content && (
+                      <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
+                    )}
+                  </div>
+                )}
 
                 {/* 文章设置 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -316,7 +429,7 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
                     {watch('summary') || '文章摘要'}
                   </div>
                   <div 
-                    className="prose max-w-none"
+                    className="prose max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-strong:text-gray-900 prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-3 prose-ul:my-4 prose-li:my-1 prose-p:my-4 prose-p:leading-relaxed"
                     dangerouslySetInnerHTML={{ 
                       __html: watchedContent || '<p>文章内容</p>' 
                     }}
@@ -342,10 +455,12 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
             >
               {loading ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+              ) : uploadMode && !article ? (
+                <Upload className="w-4 h-4 mr-2" />
               ) : (
                 <Save className="w-4 h-4 mr-2" />
               )}
-              {article ? '更新文章' : '创建文章'}
+              {article ? '更新文章' : uploadMode ? '上传Word文档' : '创建文章'}
             </button>
           </div>
         </form>

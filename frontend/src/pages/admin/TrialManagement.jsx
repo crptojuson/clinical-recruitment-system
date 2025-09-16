@@ -132,48 +132,50 @@ const TrialManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* 页面标题和操作 */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">试验管理</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">试验管理</h1>
         <button 
           onClick={handleAdd}
-          className="btn btn-primary flex items-center"
+          className="btn btn-primary flex items-center justify-center text-sm sm:text-base"
         >
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
           添加试验
         </button>
       </div>
 
       {/* 搜索和筛选 */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3 h-3 sm:w-4 sm:h-4" />
             <input
               type="text"
               placeholder="搜索试验项目..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10"
+              className="input pl-9 sm:pl-10 text-sm"
             />
           </div>
-          <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-gray-400" />
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="input min-w-32"
-            >
-              <option value="all">全部状态</option>
-              <option value="active">进行中</option>
-              <option value="inactive">已暂停</option>
-              <option value="completed">已完成</option>
-            </select>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2">
+            <div className="flex items-center space-x-2">
+              <Filter className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="input min-w-28 sm:min-w-32 text-sm"
+              >
+                <option value="all">全部状态</option>
+                <option value="active">进行中</option>
+                <option value="inactive">已暂停</option>
+                <option value="completed">已完成</option>
+              </select>
+            </div>
             <select
               value={screeningSystemFilter}
               onChange={(e) => setScreeningSystemFilter(e.target.value)}
-              className="input min-w-32"
+              className="input min-w-28 sm:min-w-32 text-sm"
             >
               <option value="all">全部系统</option>
               <option value="太美">太美</option>
