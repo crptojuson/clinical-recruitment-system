@@ -13,6 +13,7 @@ import {
 import { adminAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 import TrialForm from '../../components/admin/TrialForm';
+import Pagination from '../../components/Pagination';
 
 const TrialManagement = () => {
   const [trials, setTrials] = useState([]);
@@ -24,21 +25,43 @@ const TrialManagement = () => {
   const [editingTrial, setEditingTrial] = useState(null);
   const [editingSubjects, setEditingSubjects] = useState(null);
   const [subjectsInput, setSubjectsInput] = useState('');
+  // 添加分页状态
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0
+  });
 
   useEffect(() => {
     fetchTrials();
-  }, []);
+  }, [pagination.page, statusFilter, screeningSystemFilter]);
 
   const fetchTrials = async () => {
     try {
-      const response = await adminAPI.getTrials();
+      const params = {
+        page: pagination.page,
+        limit: pagination.limit,
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+        screeningSystem: screeningSystemFilter !== 'all' ? screeningSystemFilter : undefined
+      };
+      const response = await adminAPI.getTrials(params);
       setTrials(response.data.trials || []);
+      setPagination(prev => ({
+        ...prev,
+        total: response.data.pagination?.total || 0,
+        totalPages: response.data.pagination?.totalPages || 0
+      }));
     } catch (error) {
       console.error('获取试验列表失败:', error);
       toast.error('获取试验列表失败');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePageChange = (page) => {
+    setPagination(prev => ({ ...prev, page }));
   };
 
   const handleToggleStatus = async (id, currentStatus) => {
@@ -114,12 +137,12 @@ const TrialManagement = () => {
     setSubjectsInput('');
   };
 
+  // 过滤逻辑改为仅处理搜索词，其他筛选通过API处理
   const filteredTrials = trials.filter(trial => {
+    if (!searchTerm) return true;
     const matchesSearch = trial.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          trial.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || trial.status === statusFilter;
-    const matchesScreeningSystem = screeningSystemFilter === 'all' || trial.screeningSystem === screeningSystemFilter;
-    return matchesSearch && matchesStatus && matchesScreeningSystem;
+    return matchesSearch;
   });
 
   if (loading) {
@@ -132,50 +155,53 @@ const TrialManagement = () => {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-6">
       {/* 页面标题和操作 */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">试验管理</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">试验管理</h1>
         <button 
           onClick={handleAdd}
-          className="btn btn-primary flex items-center justify-center text-sm sm:text-base"
+          className="btn btn-primary flex items-center"
         >
-          <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+          <Plus className="w-4 h-4 mr-2" />
           添加试验
         </button>
       </div>
 
       {/* 搜索和筛选 */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3 h-3 sm:w-4 sm:h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               type="text"
               placeholder="搜索试验项目..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-9 sm:pl-10 text-sm"
+              className="input pl-10"
             />
           </div>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2">
-            <div className="flex items-center space-x-2">
-              <Filter className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="input min-w-28 sm:min-w-32 text-sm"
-              >
-                <option value="all">全部状态</option>
-                <option value="active">进行中</option>
-                <option value="inactive">已暂停</option>
-                <option value="completed">已完成</option>
-              </select>
-            </div>
+          <div className="flex items-center space-x-2">
+            <Filter className="w-4 h-4 text-gray-400" />
+            <select
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setPagination(prev => ({ ...prev, page: 1 }));
+              }}
+              className="input min-w-32"
+            >
+              <option value="all">全部状态</option>
+              <option value="recruiting">招募中</option>
+              <option value="completed">已完成</option>
+            </select>
             <select
               value={screeningSystemFilter}
-              onChange={(e) => setScreeningSystemFilter(e.target.value)}
-              className="input min-w-28 sm:min-w-32 text-sm"
+              onChange={(e) => {
+                setScreeningSystemFilter(e.target.value);
+                setPagination(prev => ({ ...prev, page: 1 }));
+              }}
+              className="input min-w-32"
             >
               <option value="all">全部系统</option>
               <option value="太美">太美</option>
@@ -307,7 +333,7 @@ const TrialManagement = () => {
                         {trial.registrationDeadline && (
                           <div>
                             <span className="text-red-600">截止:</span> {new Date(trial.registrationDeadline).toLocaleDateString('zh-CN')}
-                          </div>
+                      </div>
                         )}
                         {!trial.registrationStartDate && !trial.registrationDeadline && (
                           <span className="text-gray-500">未设置</span>
@@ -364,6 +390,17 @@ const TrialManagement = () => {
         onClose={handleFormClose}
         onSuccess={handleFormSuccess}
       />
+
+             {/* 分页 */}
+       {pagination.totalPages > 1 && (
+         <Pagination
+           currentPage={pagination.page}
+           totalPages={pagination.totalPages}
+           totalItems={pagination.total}
+           itemsPerPage={pagination.limit}
+           onPageChange={handlePageChange}
+         />
+       )}
     </div>
   );
 };

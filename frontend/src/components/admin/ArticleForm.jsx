@@ -348,20 +348,20 @@ const ArticleForm = ({ article, onClose, onSuccess }) => {
 
                 {/* 文章内容 */}
                 {!uploadMode && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      文章内容 * (支持HTML)
-                    </label>
-                    <textarea
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    文章内容 * (支持HTML)
+                  </label>
+                  <textarea
                       {...register('content', { required: !uploadMode ? '内容不能为空' : false })}
-                      rows={15}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono text-sm"
-                      placeholder="请输入文章内容，支持HTML标签"
-                    />
-                    {errors.content && (
-                      <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
-                    )}
-                  </div>
+                    rows={15}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono text-sm"
+                    placeholder="请输入文章内容，支持HTML标签"
+                  />
+                  {errors.content && (
+                    <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
+                  )}
+                </div>
                 )}
 
                 {/* 文章设置 */}

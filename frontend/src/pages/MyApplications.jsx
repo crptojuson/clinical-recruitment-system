@@ -111,16 +111,16 @@ const MyApplications = () => {
     <div className="min-h-screen bg-gray-50">
       {/* 头部 */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-3 sm:py-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">我的报名</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">查看您的所有试验申请记录和进度</p>
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <h1 className="text-2xl font-bold text-gray-900">我的申请</h1>
+          <p className="text-gray-600 mt-1">查看您的所有试验申请记录和进度</p>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-3 sm:py-6">
+      <div className="max-w-6xl mx-auto px-4 py-6">
         {/* 筛选和搜索 */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+          <div className="flex flex-col md:flex-row gap-4">
             {/* 状态筛选 */}
             <div className="flex items-center">
               <Filter className="w-4 h-4 mr-2 text-gray-500" />
@@ -130,7 +130,7 @@ const MyApplications = () => {
                   setStatusFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">全部状态</option>
                 <option value="pending">待审核</option>
@@ -152,56 +152,56 @@ const MyApplications = () => {
                 placeholder="搜索试验项目..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
             <div className="flex items-center">
-              <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 mr-2" />
-              <span className="text-sm sm:text-base text-red-700">{error}</span>
+              <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+              <span className="text-red-700">{error}</span>
             </div>
           </div>
         )}
 
         {/* 申请列表 */}
         {filteredApplications.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-8 text-center">
-            <FileText className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">暂无申请记录</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">暂无申请记录</h3>
+            <p className="text-gray-600 mb-4">
               {searchTerm || statusFilter ? '没有找到符合条件的申请' : '您还没有申请任何试验项目'}
             </p>
             <button
               onClick={() => navigate('/trials')}
-              className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
               浏览试验项目
             </button>
           </div>
         ) : (
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-4">
             {filteredApplications.map((application) => (
               <div
                 key={application.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-shadow"
+                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
               >
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex items-start justify-between">
                   <div className="flex-1">
                     {/* 试验信息 */}
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 sm:mb-4">
-                      <div className="mb-2 sm:mb-0">
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
                           {application.trial.title}
                         </h3>
-                        <p className="text-sm sm:text-base text-gray-600">{application.trial.hospital}</p>
+                        <p className="text-gray-600">{application.trial.hospital}</p>
                       </div>
                       
-                      <div className="flex items-center">
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(application.status)}`}>
+                      <div className="flex items-center space-x-3">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(application.status)}`}>
                           {getStatusIcon(application.status)}
                           <span className="ml-1">{getStatusText(application.status)}</span>
                         </span>
@@ -209,13 +209,13 @@ const MyApplications = () => {
                     </div>
 
                     {/* 项目详情 */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-3 sm:mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 
-                      <div className="flex items-center text-sm text-gray-600">
+                      <div className="flex items-center text-gray-600">
                         <DollarSign className="w-4 h-4 mr-2" />
                         补助 ¥{application.trial.compensation}
                       </div>
-                      <div className="flex items-center text-sm text-gray-600">
+                      <div className="flex items-center text-gray-600">
                         <Calendar className="w-4 h-4 mr-2" />
                         {new Date(application.submittedAt).toLocaleDateString()}
                       </div>
@@ -223,13 +223,11 @@ const MyApplications = () => {
 
                     {/* 推荐信息 */}
                     {application.referrer && (
-                      <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-600 mb-3 sm:mb-4">
-                        <div className="flex items-center mb-1 sm:mb-0">
-                          <Award className="w-4 h-4 mr-2" />
-                          推荐人：{application.referrer.name}
-                        </div>
+                      <div className="flex items-center text-sm text-gray-600 mb-4">
+                        <Award className="w-4 h-4 mr-2" />
+                        推荐人：{application.referrer.name}
                         {application.trial.referralFee > 0 && (
-                          <span className="ml-0 sm:ml-2 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                          <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 rounded">
                             推荐费 ¥{application.trial.referralFee}
                           </span>
                         )}
@@ -238,8 +236,8 @@ const MyApplications = () => {
 
                     {/* 进度提示 */}
                     {application.status === 'medical_check' && application.medicalCheckDate && (
-                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-2 sm:p-3 mb-3 sm:mb-4">
-                        <p className="text-purple-800 text-xs sm:text-sm">
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4">
+                        <p className="text-purple-800 text-sm">
                           <Calendar className="w-4 h-4 inline mr-1" />
                           体检时间：{new Date(application.medicalCheckDate).toLocaleString()}
                         </p>
@@ -247,8 +245,8 @@ const MyApplications = () => {
                     )}
 
                     {application.status === 'enrolled' && application.enrollmentDate && (
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-2 sm:p-3 mb-3 sm:mb-4">
-                        <p className="text-green-800 text-xs sm:text-sm">
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                        <p className="text-green-800 text-sm">
                           <Award className="w-4 h-4 inline mr-1" />
                           入组时间：{new Date(application.enrollmentDate).toLocaleString()}
                         </p>
@@ -257,10 +255,10 @@ const MyApplications = () => {
                   </div>
 
                   {/* 操作按钮 */}
-                  <div className="mt-3 sm:mt-0 sm:ml-4">
+                  <div className="ml-4">
                     <button
                       onClick={() => navigate(`/applications/${application.id}`)}
-                      className="flex items-center w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                      className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                     >
                       <Eye className="w-4 h-4 mr-2" />
                       查看详情
@@ -274,12 +272,12 @@ const MyApplications = () => {
 
         {/* 分页 */}
         {totalPages > 1 && (
-          <div className="flex justify-center mt-6 sm:mt-8">
-            <div className="flex space-x-1 sm:space-x-2">
+          <div className="flex justify-center mt-8">
+            <div className="flex space-x-2">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="px-3 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
                 上一页
               </button>
@@ -288,7 +286,7 @@ const MyApplications = () => {
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`px-2 sm:px-3 py-1.5 sm:py-2 text-sm border rounded-lg ${
+                  className={`px-3 py-2 border rounded-lg ${
                     currentPage === page
                       ? 'bg-blue-600 text-white border-blue-600'
                       : 'border-gray-300 hover:bg-gray-50'
@@ -301,7 +299,7 @@ const MyApplications = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="px-3 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
                 下一页
               </button>

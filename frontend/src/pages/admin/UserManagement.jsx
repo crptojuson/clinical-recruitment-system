@@ -245,105 +245,105 @@ const UserManagement = () => {
 
             {/* 桌面端表格布局 */}
             <div className="hidden lg:block overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      用户信息
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      联系方式
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      角色
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      状态
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      注册时间
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      操作
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                            <User className="w-5 h-5 text-gray-400" />
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    用户信息
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    联系方式
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    角色
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    状态
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    注册时间
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    操作
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredUsers.map((user) => (
+                  <tr key={user.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                          <User className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.name || '未知用户'}
                           </div>
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {user.name || '未知用户'}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              ID: {user.id}
-                            </div>
+                          <div className="text-sm text-gray-500">
+                            ID: {user.id}
                           </div>
                         </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="space-y-1">
-                          <div className="text-sm text-gray-900 flex items-center">
-                            <Phone className="w-3 h-3 mr-1 text-gray-400" />
-                            {user.phone || '未提供'}
-                          </div>
-                          <div className="text-sm text-gray-500 flex items-center">
-                            <Mail className="w-3 h-3 mr-1 text-gray-400" />
-                            {user.email || '未提供'}
-                          </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="space-y-1">
+                        <div className="text-sm text-gray-900 flex items-center">
+                          <Phone className="w-3 h-3 mr-1 text-gray-400" />
+                          {user.phone || '未提供'}
                         </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        {getRoleBadge(user.role)}
-                      </td>
-                      <td className="px-6 py-4">
-                        {getStatusBadge(user.status)}
-                      </td>
-                      <td className="px-6 py-4">
                         <div className="text-sm text-gray-500 flex items-center">
-                          <Calendar className="w-3 h-3 mr-1" />
-                          {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}
+                          <Mail className="w-3 h-3 mr-1 text-gray-400" />
+                          {user.email || '未提供'}
                         </div>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex justify-end space-x-2">
-                          {user.role !== 'admin' && (
-                            <select
-                              value={user.role}
-                              onChange={(e) => handleUpdateRole(user.id, e.target.value)}
-                              className="text-xs border border-gray-300 rounded px-2 py-1"
-                            >
-                              <option value="user">普通用户</option>
-                              <option value="agent">代理</option>
-                            </select>
-                          )}
-                          <button
-                            onClick={() => handleToggleStatus(user.id, user.status)}
-                            className={`p-1 rounded ${
-                              user.status === 'active' 
-                                ? 'text-red-600 hover:text-red-700' 
-                                : 'text-green-600 hover:text-green-700'
-                            }`}
-                            title={user.status === 'active' ? '禁用用户' : '启用用户'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      {getRoleBadge(user.role)}
+                    </td>
+                    <td className="px-6 py-4">
+                      {getStatusBadge(user.status)}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-500 flex items-center">
+                        <Calendar className="w-3 h-3 mr-1" />
+                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end space-x-2">
+                        {user.role !== 'admin' && (
+                          <select
+                            value={user.role}
+                            onChange={(e) => handleUpdateRole(user.id, e.target.value)}
+                            className="text-xs border border-gray-300 rounded px-2 py-1"
                           >
-                            {user.status === 'active' ? (
-                              <Ban className="w-4 h-4" />
-                            ) : (
-                              <CheckCircle className="w-4 h-4" />
-                            )}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                            <option value="user">普通用户</option>
+                            <option value="agent">代理</option>
+                          </select>
+                        )}
+                        <button
+                          onClick={() => handleToggleStatus(user.id, user.status)}
+                          className={`p-1 rounded ${
+                            user.status === 'active' 
+                              ? 'text-red-600 hover:text-red-700' 
+                              : 'text-green-600 hover:text-green-700'
+                          }`}
+                          title={user.status === 'active' ? '禁用用户' : '启用用户'}
+                        >
+                          {user.status === 'active' ? (
+                            <Ban className="w-4 h-4" />
+                          ) : (
+                            <CheckCircle className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           </>
         )}
       </div>

@@ -247,8 +247,8 @@ const Apply = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>
-          <span className="text-gray-600 text-sm">加载中...</span>
+          <div className="inline-block w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <span className="text-gray-600">加载中...</span>
         </div>
       </div>
     );
@@ -258,11 +258,11 @@ const Apply = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <AlertTriangle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-          <h1 className="text-sm font-semibold text-gray-900 mb-2">试验项目未找到</h1>
+          <AlertTriangle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">试验项目未找到</h1>
           <button 
             onClick={() => navigate('/')}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             返回首页
           </button>
@@ -275,51 +275,51 @@ const Apply = () => {
   if (applicationSuccess) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="max-w-2xl mx-auto px-4 py-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 text-center">
+        <div className="max-w-2xl mx-auto px-4 py-12">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
             {/* 成功图标 */}
-            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             
             {/* 标题 */}
-            <h1 className="text-sm font-semibold text-gray-900 mb-3">报名成功！</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">报名成功！</h1>
             
             {/* 状态提示 */}
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-3">
-              <div className="flex items-center justify-center text-orange-700 mb-1">
-                <Clock className="w-3 h-3 mr-1" />
-                <span className="font-medium text-xs">已报名，正在审核中</span>
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-center text-orange-700 mb-2">
+                <Clock className="w-5 h-5 mr-2" />
+                <span className="font-semibold">已报名，正在审核中</span>
               </div>
-              <p className="text-xs text-orange-600">
+              <p className="text-sm text-orange-600">
                 我们已收到您的报名申请，工作人员将在1-2个工作日内联系您
               </p>
             </div>
             
             {/* 重要提示 */}
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-3">
-              <div className="flex items-center justify-center text-red-700 mb-1">
-                <AlertCircle className="w-3 h-3 mr-1" />
-                <span className="font-medium text-xs">务必添加客服微信</span>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-center text-red-700 mb-2">
+                <AlertCircle className="w-5 h-5 mr-2" />
+                <span className="font-bold">务必添加客服微信</span>
               </div>
-              <p className="text-xs text-red-600 mb-2">
+              <p className="text-sm text-red-600 mb-3">
                 为确保及时沟通试验进展，请务必添加客服微信
               </p>
               <button
                 onClick={() => setShowWechatQR(true)}
-                className="inline-flex items-center px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs"
+                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
-                <MessageCircle className="w-3 h-3 mr-1" />
+                <MessageCircle className="w-4 h-4 mr-2" />
                 添加客服微信
               </button>
             </div>
             
             {/* 试验信息 */}
-            <div className="bg-gray-50 rounded-lg p-3 mb-3">
-              <h3 className="font-medium text-gray-900 mb-1 text-xs">{trial.title}</h3>
-              <div className="text-xs text-gray-600 space-y-0.5">
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-gray-900 mb-2">{trial.title}</h3>
+              <div className="text-sm text-gray-600 space-y-1">
                 <p><span className="font-medium">医院:</span> {trial.hospital}</p>
                 <p><span className="font-medium">疾病:</span> {trial.disease}</p>
                 <p><span className="font-medium">补贴:</span> ¥{trial.compensation}</p>
@@ -327,18 +327,18 @@ const Apply = () => {
             </div>
             
             {/* 操作按钮 */}
-            <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex flex-col sm:flex-row gap-3">
               {isAuthenticated && (
                 <button
                   onClick={() => navigate('/applications')}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs"
+                  className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   查看我的申请
                 </button>
               )}
               <button
                 onClick={() => navigate('/')}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-xs"
+                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 返回首页
               </button>
@@ -348,34 +348,34 @@ const Apply = () => {
         
         {/* 微信二维码弹窗 */}
         {showWechatQR && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-            <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 max-w-sm w-full">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-sm sm:text-base font-medium">添加客服微信</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl p-6 max-w-sm w-full">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">添加客服微信</h3>
                 <button
                   onClick={() => setShowWechatQR(false)}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
               <div className="text-center">
-                <div className="bg-gray-100 p-2 sm:p-3 rounded-lg mb-2 sm:mb-3">
+                <div className="bg-gray-100 p-4 rounded-lg mb-4">
                   <img 
                     src="/wechat-qr.png" 
                     alt="客服微信二维码" 
-                    className="w-28 h-28 sm:w-32 sm:h-32 mx-auto"
+                    className="w-48 h-48 mx-auto"
                     onError={(e) => {
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'block';
                     }}
                   />
-                  <div style={{display: 'none'}} className="w-28 h-28 sm:w-32 sm:h-32 mx-auto bg-gray-200 flex items-center justify-center text-gray-500">
-                    <QrCode className="w-6 h-6 sm:w-8 sm:h-8" />
+                  <div style={{display: 'none'}} className="w-48 h-48 mx-auto bg-gray-200 flex items-center justify-center text-gray-500">
+                    <QrCode className="w-16 h-16" />
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600 mb-1">扫码添加客服微信</p>
-                <p className="text-xs text-gray-500">微信号: shiyaotong01</p>
+                <p className="text-sm text-gray-600 mb-2">扫码添加客服微信</p>
+                <p className="text-xs text-gray-500">微信号: clinical-service</p>
               </div>
             </div>
           </div>
@@ -386,15 +386,15 @@ const Apply = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 标题区域 */}
-        <div className="mb-4">
+        <div className="mb-8">
           {/* 未登录用户提示 */}
           {!isAuthenticated && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
               <div className="flex items-start">
-                <Info className="w-3 h-3 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                <div className="text-xs text-blue-800">
+                <Info className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-blue-800">
                   <p className="font-medium mb-1">温馨提示</p>
                   <p>您可以直接填写表单进行报名申请。如需享受推荐服务或查看申请记录，请先 
                     <Link to="/register" className="text-blue-600 underline mx-1">注册账号</Link>
@@ -406,36 +406,36 @@ const Apply = () => {
             </div>
           )}
           
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            <div className="mb-3">
-              <h1 className="text-base font-semibold text-gray-900 mb-1">报名申请</h1>
-              <div className="flex items-center text-gray-600 mb-2">
-                <Activity className="w-3 h-3 mr-1" />
-                <span className="font-medium text-xs">{trial.title}</span>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="mb-4">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">报名申请</h1>
+              <div className="flex items-center text-gray-600 mb-4">
+                <Activity className="w-5 h-5 mr-2" />
+                <span className="font-medium">{trial.title}</span>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-              <div className="flex items-center p-2 bg-gray-50 rounded-lg">
-                <Building2 className="w-3 h-3 text-gray-500 mr-2" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                <Building2 className="w-5 h-5 text-gray-500 mr-3" />
                 <div>
-                  <div className="text-xs text-gray-500">医疗机构</div>
-                  <div className="font-medium text-gray-900 text-xs">{trial.hospital}</div>
+                  <div className="text-sm text-gray-500">医疗机构</div>
+                  <div className="font-medium text-gray-900">{trial.hospital}</div>
                 </div>
               </div>
-              <div className="flex items-center p-2 bg-gray-50 rounded-lg">
-                <Award className="w-3 h-3 text-gray-500 mr-2" />
+              <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                <Award className="w-5 h-5 text-gray-500 mr-3" />
                 <div>
-                  <div className="text-xs text-gray-500">试验补贴</div>
-                  <div className="font-medium text-gray-900 text-xs">¥{trial.compensation}</div>
+                  <div className="text-sm text-gray-500">试验补贴</div>
+                  <div className="font-medium text-gray-900">¥{trial.compensation}</div>
                 </div>
               </div>
               {isAuthenticated && trial.referralFee > 0 && (
-                <div className="flex items-center p-2 bg-blue-50 rounded-lg border border-blue-200">
-                  <Share2 className="w-3 h-3 text-blue-600 mr-2" />
+                <div className="flex items-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <Share2 className="w-5 h-5 text-blue-600 mr-3" />
                   <div>
-                    <div className="text-xs text-blue-600">推荐奖励</div>
-                    <div className="font-medium text-blue-700 text-xs">¥{trial.referralFee}</div>
+                    <div className="text-sm text-blue-600">推荐奖励</div>
+                    <div className="font-medium text-blue-700">¥{trial.referralFee}</div>
                   </div>
                 </div>
               )}
@@ -443,43 +443,43 @@ const Apply = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* 基本信息 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            <h2 className="text-sm font-medium text-gray-900 mb-3 flex items-center">
-              <User className="w-3 h-3 mr-1 text-gray-500" />
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+              <User className="w-5 h-5 mr-2 text-gray-500" />
               基本信息
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-group">
-                <label htmlFor="name" className="form-label text-xs">
+                <label htmlFor="name" className="form-label">
                   姓名 *
                 </label>
                 <input
                   id="name"
                   type="text"
                   placeholder="请输入真实姓名"
-                  className="input text-xs"
+                  className="input"
                   {...register('name', {
                     required: '请输入姓名',
                     minLength: { value: 2, message: '姓名至少2个字符' }
                   })}
                 />
                 {errors.name && (
-                  <p className="form-error text-xs">{errors.name.message}</p>
+                  <p className="form-error">{errors.name.message}</p>
                 )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="phone" className="form-label text-xs">
+                <label htmlFor="phone" className="form-label">
                   手机号 *
                 </label>
                 <input
                   id="phone"
                   type="tel"
                   placeholder="请输入手机号"
-                  className={`input text-xs ${isAuthenticated ? 'bg-gray-50' : ''}`}
+                  className={`input ${isAuthenticated ? 'bg-gray-50' : ''}`}
                   disabled={isAuthenticated}
                   {...register('phone', {
                     required: '请输入手机号',
@@ -490,22 +490,22 @@ const Apply = () => {
                   })}
                 />
                 {isAuthenticated && (
-                  <p className="text-xs text-gray-500 mt-0.5">手机号不可修改</p>
+                  <p className="text-xs text-gray-500 mt-1">手机号不可修改</p>
                 )}
                 {errors.phone && (
-                  <p className="text-xs text-red-500 mt-0.5">{errors.phone.message}</p>
+                  <p className="text-xs text-red-500 mt-1">{errors.phone.message}</p>
                 )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="idCard" className="form-label text-xs">
+                <label htmlFor="idCard" className="form-label">
                   身份证号 *
                 </label>
                 <input
                   id="idCard"
                   type="text"
                   placeholder="请输入身份证号"
-                  className="input text-xs"
+                  className="input"
                   {...register('idCard', {
                     required: '请输入身份证号',
                     pattern: {
@@ -515,17 +515,17 @@ const Apply = () => {
                   })}
                 />
                 {errors.idCard && (
-                  <p className="form-error text-xs">{errors.idCard.message}</p>
+                  <p className="form-error">{errors.idCard.message}</p>
                 )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="gender" className="form-label text-xs">
+                <label htmlFor="gender" className="form-label">
                   性别 *
                 </label>
                 <select
                   id="gender"
-                  className="input text-xs"
+                  className="input"
                   {...register('gender', { required: '请选择性别' })}
                 >
                   <option value="">请选择性别</option>
@@ -533,10 +533,10 @@ const Apply = () => {
                   <option value="女">女</option>
                 </select>
                 {errors.gender && (
-                  <p className="form-error text-xs">{errors.gender.message}</p>
+                  <p className="form-error">{errors.gender.message}</p>
                 )}
                 {idCard && gender && (
-                  <p className="text-xs text-green-600 mt-0.5">
+                  <p className="text-xs text-green-600 mt-1">
                     已从身份证自动识别
                   </p>
                 )}
@@ -545,23 +545,23 @@ const Apply = () => {
           </div>
 
           {/* 身体信息 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            <h2 className="text-sm font-medium text-gray-900 mb-3 flex items-center">
-              <Scale className="w-3 h-3 mr-1 text-gray-500" />
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+              <Scale className="w-5 h-5 mr-2 text-gray-500" />
               身体信息
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-group">
-                <label htmlFor="height" className="form-label text-xs flex items-center">
-                  <Ruler className="w-3 h-3 mr-1" />
+                <label htmlFor="height" className="form-label flex items-center">
+                  <Ruler className="w-4 h-4 mr-1" />
                   身高 (cm) *
                 </label>
                 <input
                   id="height"
                   type="number"
                   placeholder="请输入身高"
-                  className="input text-xs"
+                  className="input"
                   {...register('height', {
                     required: '请输入身高',
                     min: { value: 100, message: '身高不能小于100cm' },
@@ -569,20 +569,20 @@ const Apply = () => {
                   })}
                 />
                 {errors.height && (
-                  <p className="form-error text-xs">{errors.height.message}</p>
+                  <p className="form-error">{errors.height.message}</p>
                 )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="weight" className="form-label text-xs flex items-center">
-                  <Scale className="w-3 h-3 mr-1" />
+                <label htmlFor="weight" className="form-label flex items-center">
+                  <Scale className="w-4 h-4 mr-1" />
                   体重 (kg) *
                 </label>
                 <input
                   id="weight"
                   type="number"
                   placeholder="请输入体重"
-                  className="input text-xs"
+                  className="input"
                   {...register('weight', {
                     required: '请输入体重',
                     min: { value: 30, message: '体重不能小于30kg' },
@@ -590,32 +590,32 @@ const Apply = () => {
                   })}
                 />
                 {errors.weight && (
-                  <p className="form-error text-xs">{errors.weight.message}</p>
+                  <p className="form-error">{errors.weight.message}</p>
                 )}
               </div>
             </div>
 
             {/* 自动计算信息 */}
             {(bmi || age) && (
-              <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <h3 className="font-medium text-gray-900 mb-2 text-xs">自动计算信息</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 className="font-medium text-gray-900 mb-3">自动计算信息</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {age && (
                     <div className="flex items-center text-gray-700">
-                      <User className="w-3 h-3 mr-1 text-gray-500" />
-                      <span className="text-xs">年龄: <strong>{age}岁</strong></span>
+                      <User className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>年龄: <strong>{age}岁</strong></span>
                     </div>
                   )}
                   {bmi && (
                     <div className="flex items-center text-gray-700">
-                      <Activity className="w-3 h-3 mr-1 text-gray-500" />
-                      <span className="text-xs">BMI: <strong>{bmi}</strong></span>
+                      <Activity className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>BMI: <strong>{bmi}</strong></span>
                     </div>
                   )}
                   {bmi && (
                     <div className="flex items-center text-gray-700">
-                      <Heart className="w-3 h-3 mr-1 text-gray-500" />
-                      <span className="text-xs">
+                      <Heart className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>
                         {bmi < 18.5 ? '偏瘦' : 
                          bmi < 24 ? '正常' : 
                          bmi < 28 ? '偏胖' : '肥胖'}
@@ -628,25 +628,25 @@ const Apply = () => {
 
             {/* 资格检查 */}
             {eligibilityStatus && (
-              <div className={`mt-3 p-3 rounded-lg border ${
+              <div className={`mt-4 p-4 rounded-lg border ${
                 eligibilityStatus.eligible 
                   ? 'bg-green-50 border-green-200' 
                   : 'bg-red-50 border-red-200'
               }`}>
                 <div className="flex items-start">
                   {eligibilityStatus.eligible ? (
-                    <Check className="w-3 h-3 text-green-600 mr-1 mt-0.5 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
                   ) : (
-                    <AlertTriangle className="w-3 h-3 text-red-600 mr-1 mt-0.5 flex-shrink-0" />
+                    <AlertTriangle className="w-5 h-5 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
                   )}
                   <div>
-                    <p className={`font-medium text-xs ${
+                    <p className={`font-medium ${
                       eligibilityStatus.eligible ? 'text-green-800' : 'text-red-800'
                     }`}>
                       {eligibilityStatus.eligible ? '✅ 符合试验要求' : '❌ 不符合试验要求'}
                     </p>
                     {!eligibilityStatus.eligible && (
-                      <ul className="mt-1 text-xs text-red-700">
+                      <ul className="mt-2 text-sm text-red-700">
                         {eligibilityStatus.issues.map((issue, index) => (
                           <li key={index} className="list-disc list-inside">{issue}</li>
                         ))}
@@ -661,22 +661,22 @@ const Apply = () => {
 
 
           {/* 健康信息 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            <h2 className="text-sm font-medium text-gray-900 mb-3 flex items-center">
-              <Heart className="w-3 h-3 mr-1 text-gray-500" />
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+              <Heart className="w-5 h-5 mr-2 text-gray-500" />
               健康信息
             </h2>
 
-            <div className="space-y-3">
+            <div className="space-y-6">
               {/* 吸烟状态 */}
               <div className="form-group">
-                <label htmlFor="smokingStatus" className="form-label text-xs flex items-center">
-                  <Cigarette className="w-3 h-3 mr-1" />
+                <label htmlFor="smokingStatus" className="form-label flex items-center">
+                  <Cigarette className="w-4 h-4 mr-1" />
                   吸烟状态 *
                 </label>
                 <select
                   id="smokingStatus"
-                  className="input text-xs"
+                  className="input"
                   {...register('smokingStatus', { required: '请选择吸烟状态' })}
                 >
                   <option value="不吸烟">不吸烟</option>
@@ -685,17 +685,17 @@ const Apply = () => {
                   <option value="已戒烟">已戒烟</option>
                 </select>
                 {errors.smokingStatus && (
-                  <p className="form-error text-xs">{errors.smokingStatus.message}</p>
+                  <p className="form-error">{errors.smokingStatus.message}</p>
                 )}
               </div>
 
               {/* 疾病史 */}
               <div className="form-group">
-                <label className="form-label text-xs flex items-center">
-                  <AlertCircle className="w-3 h-3 mr-1" />
+                <label className="form-label flex items-center">
+                  <AlertCircle className="w-4 h-4 mr-1" />
                   疾病史（请选择您曾经或正在患有的疾病，如无疾病史可不选择）
                 </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-3">
                   {COMMON_DISEASES.map((disease) => (
                     <label key={disease} className="flex items-center">
                       <input
@@ -704,50 +704,50 @@ const Apply = () => {
                         className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         {...register('diseases')}
                       />
-                      <span className="ml-1 text-xs text-gray-700">{disease}</span>
+                      <span className="ml-2 text-sm text-gray-700">{disease}</span>
                     </label>
                   ))}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">如有其他疾病，请在下方详细说明；如无疾病史，可在详细病史中填写"无"</p>
+                <p className="text-xs text-gray-500 mt-2">如有其他疾病，请在下方详细说明；如无疾病史，可在详细病史中填写"无"</p>
               </div>
 
               {/* 详细医疗信息 */}
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 gap-6">
                 <div className="form-group">
-                  <label htmlFor="medicalHistory" className="form-label text-xs">
+                  <label htmlFor="medicalHistory" className="form-label">
                     详细病史及手术史（如无相关病史，请填写"无"）
                   </label>
                   <textarea
                     id="medicalHistory"
-                    rows={2}
+                    rows={3}
                     placeholder="请详细描述您的病史、手术史等医疗信息，如无病史请填写'无'"
-                    className="input text-xs"
+                    className="input"
                     {...register('medicalHistory')}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="currentMedications" className="form-label text-xs">
+                  <label htmlFor="currentMedications" className="form-label">
                     当前用药情况（如无用药，请填写"无"）
                   </label>
                   <textarea
                     id="currentMedications"
-                    rows={2}
+                    rows={3}
                     placeholder="请列出您目前正在服用的所有药物，如无用药请填写'无'"
-                    className="input text-xs"
+                    className="input"
                     {...register('currentMedications')}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="allergies" className="form-label text-xs">
+                  <label htmlFor="allergies" className="form-label">
                     过敏史（如无过敏史，请填写"无"）
                   </label>
                   <textarea
                     id="allergies"
                     rows={2}
                     placeholder="请说明您对哪些药物、食物或其他物质过敏，如无过敏史请填写'无'"
-                    className="input text-xs"
+                    className="input"
                     {...register('allergies')}
                   />
                 </div>
@@ -757,51 +757,51 @@ const Apply = () => {
 
           {/* 推荐功能 */}
           {isAuthenticated && user?.channelId && trial.referralFee > 0 && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-              <h2 className="text-sm font-medium text-gray-900 mb-3 flex items-center">
-                <Share2 className="w-3 h-3 mr-1 text-gray-500" />
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Share2 className="w-5 h-5 mr-2 text-gray-500" />
                 推荐给他人
               </h2>
               
-              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="font-medium text-blue-900 mb-1 text-xs">
+                    <h3 className="font-medium text-blue-900 mb-2">
                       推荐奖励：¥{trial.referralFee}
                     </h3>
-                    <p className="text-xs text-blue-700 mb-2">
+                    <p className="text-sm text-blue-700 mb-3">
                       推荐朋友参与此试验，成功入组后您可获得推荐奖励
                     </p>
                     <button
                       type="button"
                       onClick={() => setShowReferralLink(!showReferralLink)}
-                      className="px-3 py-1 border border-blue-300 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-xs"
+                      className="px-4 py-2 border border-blue-300 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm"
                     >
                       {showReferralLink ? '隐藏' : '生成'}推荐链接
                     </button>
                   </div>
-                  <Share2 className="w-4 h-4 text-blue-600" />
+                  <Share2 className="w-8 h-8 text-blue-600" />
                 </div>
                 
                 {showReferralLink && (
-                  <div className="mt-3 p-2 bg-white rounded border">
+                  <div className="mt-4 p-3 bg-white rounded border">
                     <div className="flex items-center gap-2">
                       <input
                         type="text"
                         value={generateReferralLink()}
                         readOnly
-                        className="input flex-1 text-xs"
+                        className="input flex-1 text-sm"
                       />
                       <button
                         type="button"
                         onClick={copyReferralLink}
-                        className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs flex items-center"
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center"
                       >
-                        <Copy className="w-3 h-3 mr-1" />
+                        <Copy className="w-4 h-4 mr-1" />
                         复制
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 mt-2">
                       分享此链接给朋友，他们通过此链接报名成功后您将获得奖励
                     </p>
                   </div>
@@ -811,18 +811,18 @@ const Apply = () => {
           )}
 
           {/* 授权同意 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            <h2 className="text-sm font-medium text-gray-900 mb-3 flex items-center">
-              <Check className="w-3 h-3 mr-1 text-gray-500" />
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+              <Check className="w-5 h-5 mr-2 text-gray-500" />
               授权同意
             </h2>
             
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
               <div className="flex items-start">
-                <AlertTriangle className="w-3 h-3 text-orange-600 mr-2 mt-0.5 flex-shrink-0" />
-                <div className="text-xs text-orange-800">
-                  <p className="font-medium mb-1">重要声明</p>
-                  <ul className="space-y-0.5 list-disc list-inside">
+                <AlertTriangle className="w-5 h-5 text-orange-600 mr-3 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-orange-800">
+                  <p className="font-medium mb-2">重要声明</p>
+                  <ul className="space-y-1 list-disc list-inside">
                     <li>我同意将个人信息提供给医疗机构用于临床试验筛选</li>
                     <li>我同意接受相关的医疗咨询、检查和随访</li>
                     <li>我了解参与临床试验的风险和收益</li>
@@ -835,23 +835,23 @@ const Apply = () => {
           </div>
 
           {/* 提交按钮 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            <div className="flex gap-2">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex gap-4">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex-1 text-xs"
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex-1"
               >
                 返回
               </button>
               <button
                 type="submit"
                 disabled={submitting || (eligibilityStatus && !eligibilityStatus.eligible)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex-1 text-xs"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex-1"
               >
                 {submitting ? (
                   <div className="flex items-center justify-center">
-                    <div className="inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-1"></div>
+                    <div className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                     提交中...
                   </div>
                 ) : (
@@ -861,7 +861,7 @@ const Apply = () => {
             </div>
             
             {eligibilityStatus && !eligibilityStatus.eligible && (
-              <p className="text-xs text-red-600 text-center mt-2">
+              <p className="text-sm text-red-600 text-center mt-3">
                 请先满足试验入选条件后再提交申请
               </p>
             )}

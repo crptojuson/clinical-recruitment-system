@@ -127,16 +127,11 @@ const Profile = () => {
     <div className="min-h-screen bg-gray-50">
       {/* 页面头部 */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">个人中心</h1>
-              <p className="text-sm sm:text-base text-gray-600">管理您的个人信息和账户设置</p>
-            </div>
-            <div className="sm:hidden">
-              <div className={`flex items-center px-2 py-1 ${roleInfo.bgColor} rounded-lg`}>
-                <roleInfo.icon className={`w-4 h-4 ${roleInfo.textColor}`} />
-              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">个人中心</h1>
+              <p className="text-gray-600">管理您的个人信息和账户设置</p>
             </div>
             <div className="hidden sm:flex items-center space-x-4">
               <div className={`flex items-center px-3 py-2 ${roleInfo.bgColor} rounded-lg`}>
@@ -148,31 +143,30 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* 左侧主要内容 */}
-          <div className="lg:col-span-3 space-y-4 sm:space-y-6 lg:space-y-8">
+          <div className="lg:col-span-3 space-y-8">
             {/* 基本信息卡片 */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="px-3 sm:px-6 py-3 sm:py-5 border-b border-gray-200">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+              <div className="px-6 py-5 border-b border-gray-200">
+                <div className="flex justify-between items-center">
                   <div className="flex items-center">
-                    <div className="p-1.5 sm:p-2 bg-gray-100 rounded-lg">
-                      <User className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
+                    <div className="p-2 bg-gray-100 rounded-lg">
+                      <User className="w-6 h-6 text-gray-600" />
                     </div>
-                    <div className="ml-3 sm:ml-4">
-                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900">基本信息</h2>
-                      <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">完善个人资料，获得更好的服务体验</p>
+                    <div className="ml-4">
+                      <h2 className="text-xl font-semibold text-gray-900">基本信息</h2>
+                      <p className="text-sm text-gray-500">完善个人资料，获得更好的服务体验</p>
                     </div>
                   </div>
                   {!isEditing ? (
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="flex items-center justify-center px-3 sm:px-4 py-2 text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors text-sm"
+                      className="flex items-center px-4 py-2 text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
                     >
-                      <Edit3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                      <span className="hidden sm:inline">编辑信息</span>
-                      <span className="sm:hidden">编辑</span>
+                      <Edit3 className="w-4 h-4 mr-2" />
+                      编辑信息
                     </button>
                   ) : (
                     <div className="flex space-x-2">
@@ -181,9 +175,9 @@ const Profile = () => {
                           setIsEditing(false);
                           reset();
                         }}
-                        className="flex items-center px-3 sm:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+                        className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                       >
-                        <X className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                        <X className="w-4 h-4 mr-2" />
                         取消
                       </button>
                     </div>
@@ -191,9 +185,9 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="p-3 sm:p-6">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="p-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-group">
                       <label className="form-label flex items-center">
                         <User className="w-4 h-4 mr-2 text-gray-400" />
@@ -311,20 +305,20 @@ const Profile = () => {
 
                   {/* BMI显示 */}
                   {bmi && (
-                    <div className="p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <div className="p-1.5 sm:p-2 bg-white rounded-lg mr-2 sm:mr-3 border">
-                            <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                          <div className="p-2 bg-white rounded-lg mr-3 border">
+                            <Trophy className="w-5 h-5 text-gray-600" />
                           </div>
                           <div>
-                            <div className="text-sm sm:text-base font-semibold text-gray-900">BMI指数</div>
-                            <div className="text-xs sm:text-sm text-gray-500">身体质量指数</div>
+                            <div className="font-semibold text-gray-900">BMI指数</div>
+                            <div className="text-sm text-gray-500">身体质量指数</div>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-xl sm:text-2xl font-bold text-gray-900">{bmi}</div>
-                          <div className={`text-xs sm:text-sm font-medium ${bmiStatus.color}`}>
+                          <div className="text-2xl font-bold text-gray-900">{bmi}</div>
+                          <div className={`text-sm font-medium ${bmiStatus.color}`}>
                             {bmiStatus.text}
                           </div>
                         </div>
@@ -333,13 +327,13 @@ const Profile = () => {
                   )}
 
                   {isEditing && (
-                    <div className="flex justify-end pt-3 sm:pt-4 border-t border-gray-200">
+                    <div className="flex justify-end pt-4 border-t border-gray-200">
                       <button
                         type="submit"
                         disabled={isLoading}
-                        className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                        className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                       >
-                        <Save className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                        <Save className="w-4 h-4 mr-2" />
                         {isLoading ? '保存中...' : '保存更改'}
                       </button>
                     </div>
@@ -351,46 +345,46 @@ const Profile = () => {
             {/* 推荐用户列表 */}
             {(user?.role === 'agent' || user?.role === 'admin') && (
               <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="px-3 sm:px-6 py-3 sm:py-5 border-b border-gray-200">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="px-6 py-5 border-b border-gray-200">
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="p-1.5 sm:p-2 bg-gray-100 rounded-lg">
-                        <Users className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
+                      <div className="p-2 bg-gray-100 rounded-lg">
+                        <Users className="w-6 h-6 text-gray-600" />
                       </div>
-                      <div className="ml-3 sm:ml-4">
-                        <h2 className="text-lg sm:text-xl font-semibold text-gray-900">我的推荐用户</h2>
-                        <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">通过您推荐注册的用户列表</p>
+                      <div className="ml-4">
+                        <h2 className="text-xl font-semibold text-gray-900">我的推荐用户</h2>
+                        <p className="text-sm text-gray-500">通过您推荐注册的用户列表</p>
                       </div>
                     </div>
-                    <div className="bg-gray-50 px-2 sm:px-3 py-1 rounded-lg self-start sm:self-auto">
-                      <span className="text-xs sm:text-sm font-medium text-gray-700">
+                    <div className="bg-gray-50 px-3 py-1 rounded-lg">
+                      <span className="text-sm font-medium text-gray-700">
                         共 {referrals.length} 人
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-3 sm:p-6">
+                <div className="p-6">
                   {loadingReferrals ? (
-                    <div className="text-center py-8 sm:py-12">
-                      <div className="inline-block w-6 h-6 sm:w-8 sm:h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-3 sm:mb-4"></div>
-                      <p className="text-sm sm:text-base text-gray-500">加载推荐用户中...</p>
+                    <div className="text-center py-12">
+                      <div className="inline-block w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                      <p className="text-gray-500">加载推荐用户中...</p>
                     </div>
                   ) : referrals.length > 0 ? (
-                    <div className="space-y-3 sm:space-y-4">
+                    <div className="space-y-4">
                       {referrals.map((referral, index) => (
-                        <div key={referral.id || index} className="group bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-white hover:shadow-sm border hover:border-gray-300 transition-all duration-200">
+                        <div key={referral.id || index} className="group bg-gray-50 rounded-lg p-4 hover:bg-white hover:shadow-sm border hover:border-gray-300 transition-all duration-200">
                           <div className="flex items-start justify-between">
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center mb-2 sm:mb-3">
-                                <div className="p-1 sm:p-1.5 bg-white rounded-lg mr-2 sm:mr-3 border flex-shrink-0">
-                                  <UserCheck className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
+                            <div className="flex-1">
+                              <div className="flex items-center mb-3">
+                                <div className="p-1.5 bg-white rounded-lg mr-3 border">
+                                  <UserCheck className="w-4 h-4 text-gray-600" />
                                 </div>
-                                <span className="font-medium text-gray-900 text-sm sm:text-base truncate">
+                                <span className="font-medium text-gray-900">
                                   {referral.name || '未填写姓名'}
                                 </span>
                                 {referral.status && (
-                                  <span className={`ml-2 sm:ml-3 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-xs font-medium flex-shrink-0 ${
+                                  <span className={`ml-3 px-2.5 py-1 rounded-full text-xs font-medium ${
                                     referral.status === 'enrolled' ? 'bg-green-100 text-green-800' :
                                     referral.status === 'contacted' ? 'bg-blue-100 text-blue-800' :
                                     referral.status === 'submitted' ? 'bg-orange-100 text-orange-800' :
@@ -403,46 +397,46 @@ const Profile = () => {
                                 )}
                               </div>
                               
-                              <div className="space-y-2 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600">
                                 {referral.phone && (
                                   <div className="flex items-center">
-                                    <Phone className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-gray-400 flex-shrink-0" />
-                                    <span className="truncate">{referral.phone}</span>
+                                    <Phone className="w-4 h-4 mr-2 text-gray-400" />
+                                    <span>{referral.phone}</span>
                                   </div>
                                 )}
                                 {referral.appliedAt && (
                                   <div className="flex items-center">
-                                    <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-gray-400 flex-shrink-0" />
+                                    <Calendar className="w-4 h-4 mr-2 text-gray-400" />
                                     <span>{new Date(referral.appliedAt).toLocaleDateString()}</span>
                                   </div>
                                 )}
                                 {referral.trialTitle && (
-                                  <div className="sm:col-span-2 p-2 bg-white rounded border border-gray-200 mt-2 sm:mt-0">
+                                  <div className="md:col-span-2 p-2 bg-white rounded border border-gray-200">
                                     <span className="text-xs text-gray-500">参与项目：</span>
-                                    <div className="font-medium text-gray-700 text-xs sm:text-sm truncate">{referral.trialTitle}</div>
+                                    <div className="font-medium text-gray-700">{referral.trialTitle}</div>
                                   </div>
                                 )}
                               </div>
                             </div>
-                            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0 ml-2" />
+                            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-8 sm:py-12">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                        <Users className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+                    <div className="text-center py-12">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Users className="w-8 h-8 text-gray-400" />
                       </div>
-                      <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">暂无推荐用户</h3>
-                      <p className="text-sm sm:text-base text-gray-500 mb-4 px-4">
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">暂无推荐用户</h3>
+                      <p className="text-gray-500 mb-4">
                         分享项目链接给朋友，他们注册后会显示在这里
                       </p>
                       <button
                         onClick={copyShareLink}
-                        className="inline-flex items-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
-                        <Share2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                        <Share2 className="w-4 h-4 mr-2" />
                         分享推荐链接
                       </button>
                     </div>
@@ -453,30 +447,30 @@ const Profile = () => {
           </div>
 
           {/* 右侧边栏 */}
-          <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-6">
             {/* 账户信息卡片 */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="px-3 sm:px-5 py-3 sm:py-4 border-b border-gray-200">
-                <h3 className="text-sm sm:text-base font-semibold text-gray-900 flex items-center">
-                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-gray-500" />
+              <div className="px-5 py-4 border-b border-gray-200">
+                <h3 className="font-semibold text-gray-900 flex items-center">
+                  <Shield className="w-5 h-5 mr-2 text-gray-500" />
                   账户信息
                 </h3>
               </div>
-              <div className="p-3 sm:p-5 space-y-3 sm:space-y-4">
-                <div className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center min-w-0">
-                    <roleInfo.icon className={`w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 ${roleInfo.textColor} flex-shrink-0`} />
-                    <div className="min-w-0">
-                      <div className="text-sm sm:text-base font-medium text-gray-900 truncate">{roleInfo.text}</div>
+              <div className="p-5 space-y-4">
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <roleInfo.icon className={`w-5 h-5 mr-3 ${roleInfo.textColor}`} />
+                    <div>
+                      <div className="font-medium text-gray-900">{roleInfo.text}</div>
                       <div className="text-xs text-gray-500">账户类型</div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex items-center p-2 sm:p-3 bg-gray-50 rounded-lg">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-gray-500 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="text-sm sm:text-base font-medium text-gray-900">
+                <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                  <Clock className="w-5 h-5 mr-3 text-gray-500" />
+                  <div>
+                    <div className="font-medium text-gray-900">
                       {new Date(user?.createdAt).toLocaleDateString()}
                     </div>
                     <div className="text-xs text-gray-500">注册时间</div>
@@ -487,27 +481,27 @@ const Profile = () => {
 
             {/* 推荐功能卡片 */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="px-3 sm:px-5 py-3 sm:py-4 border-b border-gray-200">
-                <h3 className="text-sm sm:text-base font-semibold text-gray-900 flex items-center">
-                  <Gift className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-gray-500" />
+              <div className="px-5 py-4 border-b border-gray-200">
+                <h3 className="font-semibold text-gray-900 flex items-center">
+                  <Gift className="w-5 h-5 mr-2 text-gray-500" />
                   推荐奖励
                 </h3>
               </div>
               
-              <div className="p-3 sm:p-5">
+              <div className="p-5">
                 {user?.role === 'agent' || user?.role === 'admin' ? (
-                  <div className="space-y-3 sm:space-y-4">
-                    <div className="p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                      <div className="flex items-center mb-2 sm:mb-3">
-                        <div className="p-1 sm:p-1.5 bg-blue-100 rounded-lg mr-2 sm:mr-3 flex-shrink-0">
-                          <Star className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                  <div className="space-y-4">
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-center mb-3">
+                        <div className="p-1.5 bg-blue-100 rounded-lg mr-3">
+                          <Star className="w-5 h-5 text-blue-600" />
                         </div>
-                        <span className="text-sm sm:text-base font-medium text-blue-800">代理特权已激活</span>
+                        <span className="font-medium text-blue-800">代理特权已激活</span>
                       </div>
-                      <div className="space-y-2 text-xs sm:text-sm">
+                      <div className="space-y-2 text-sm">
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">推荐码</span>
-                          <code className="bg-white px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border text-blue-700 font-mono text-xs">
+                          <code className="bg-white px-2 py-1 rounded border text-blue-700 font-mono">
                             {user.channelId}
                           </code>
                         </div>
@@ -522,58 +516,58 @@ const Profile = () => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                      <div className="bg-gray-50 p-2 sm:p-3 rounded-lg text-center border">
-                        <div className="text-lg sm:text-2xl font-bold text-gray-900">{user.totalReferrals || 0}</div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-gray-50 p-3 rounded-lg text-center border">
+                        <div className="text-2xl font-bold text-gray-900">{user.totalReferrals || 0}</div>
                         <div className="text-xs text-gray-600">推荐人数</div>
                       </div>
-                      <div className="bg-gray-50 p-2 sm:p-3 rounded-lg text-center border">
-                        <div className="text-lg sm:text-2xl font-bold text-gray-900">¥{user.totalEarnings || 0}</div>
+                      <div className="bg-gray-50 p-3 rounded-lg text-center border">
+                        <div className="text-2xl font-bold text-gray-900">¥{user.totalEarnings || 0}</div>
                         <div className="text-xs text-gray-600">累计收益</div>
                       </div>
                     </div>
 
                     <button
                       onClick={copyShareLink}
-                      className="w-full flex items-center justify-center px-3 sm:px-4 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+                      className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
-                      <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                      <Copy className="w-4 h-4 mr-2" />
                       复制推荐链接
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-3 sm:space-y-4">
-                    <div className="text-center py-3 sm:py-4">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                        <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
+                  <div className="space-y-4">
+                    <div className="text-center py-4">
+                      <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Gift className="w-6 h-6 text-gray-500" />
                       </div>
-                      <h4 className="text-sm sm:text-base font-medium text-gray-900 mb-2">成为推荐代理</h4>
-                      <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 px-2">
+                      <h4 className="font-medium text-gray-900 mb-2">成为推荐代理</h4>
+                      <p className="text-sm text-gray-600 mb-4">
                         推荐朋友参与试验获得奖励
                       </p>
                     </div>
                     
-                    <div className="space-y-1.5 sm:space-y-2 text-xs text-gray-600 bg-gray-50 p-2.5 sm:p-3 rounded-lg">
+                    <div className="space-y-2 text-xs text-gray-600 bg-gray-50 p-3 rounded-lg">
                       <div className="flex items-center">
-                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2 flex-shrink-0"></div>
-                        <span className="text-xs">每成功推荐1人获得奖励</span>
+                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></div>
+                        每成功推荐1人获得奖励
                       </div>
                       <div className="flex items-center">
-                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2 flex-shrink-0"></div>
-                        <span className="text-xs">专属推荐码和链接</span>
+                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></div>
+                        专属推荐码和链接
                       </div>
                       <div className="flex items-center">
-                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2 flex-shrink-0"></div>
-                        <span className="text-xs">实时查看推荐收益</span>
+                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></div>
+                        实时查看推荐收益
                       </div>
                     </div>
                     
                     <button
                       onClick={handleBecomeAgent}
                       disabled={isLoading}
-                      className="w-full flex items-center justify-center px-3 sm:px-4 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                      className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                     >
-                      <Award className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                      <Award className="w-4 h-4 mr-2" />
                       立即成为代理
                     </button>
                   </div>

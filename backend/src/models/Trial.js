@@ -100,7 +100,7 @@ const Trial = sequelize.define('Trial', {
     type: DataTypes.STRING,
     defaultValue: '不联网项目',
     validate: {
-      isIn: [['太美', '中兴联网', '全国联网', '不联网项目']]
+      isIn: [['太美', '中兴联网', '不联网项目']]
     }
   },
   // BMI要求

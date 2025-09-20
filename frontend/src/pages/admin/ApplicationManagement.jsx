@@ -225,55 +225,55 @@ const ApplicationManagement = () => {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-6">
       {/* 页面标题 */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">申请管理</h1>
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">申请管理</h1>
+        <div className="flex items-center space-x-4">
           {selectedApplications.length > 0 && (
             <button
               onClick={exportToExcel}
               disabled={isExporting}
-              className="flex items-center justify-center px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isExporting ? (
                 <>
-                  <div className="animate-spin rounded-full h-3 h-3 sm:h-4 sm:w-4 border-b-2 border-white mr-1 sm:mr-2"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   导出中...
                 </>
               ) : (
                 <>
-                  <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <Download className="w-4 h-4 mr-2" />
                   导出选中 ({selectedApplications.length})
                 </>
               )}
             </button>
           )}
-        <div className="text-xs sm:text-sm text-gray-500">
+        <div className="text-sm text-gray-500">
           共 {applications.length} 个申请
           </div>
         </div>
       </div>
 
       {/* 搜索和筛选 */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3 h-3 sm:w-4 sm:h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="搜索申请人、手机号或项目..."
+              placeholder="搜索申请人姓名、手机号或试验项目..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-9 sm:pl-10 text-sm"
+              className="input pl-10"
             />
           </div>
           <div className="flex items-center space-x-2">
-            <Filter className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+            <Filter className="w-4 h-4 text-gray-400" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="input min-w-28 sm:min-w-32 text-sm"
+              className="input min-w-32"
             >
               <option value="all">全部状态</option>
               <option value="pending">待审核</option>
@@ -292,56 +292,69 @@ const ApplicationManagement = () => {
       {/* 申请列表 */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         {filteredApplications.length === 0 ? (
-          <div className="text-center py-8 sm:py-12">
-            <Clock className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
-            <p className="text-sm sm:text-base text-gray-500">暂无申请记录</p>
+          <div className="text-center py-12">
+            <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-500">暂无申请记录</p>
           </div>
         ) : (
-          <>
-            {/* 移动端卡片布局 */}
-            <div className="block lg:hidden">
-              <div className="p-3 border-b border-gray-200 bg-gray-50">
-                <label className="flex items-center text-sm">
-                  <input
-                    type="checkbox"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2"
-                  />
-                  全选 ({selectedApplications.length}/{filteredApplications.length})
-                </label>
-              </div>
-              <div className="divide-y divide-gray-200">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left">
+                    <input
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAll}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    申请人信息
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    试验项目
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    状态
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    申请时间
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    操作
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
                 {filteredApplications.map((application) => (
-                  <div key={application.id} className="p-4 hover:bg-gray-50">
-                    <div className="flex items-start justify-between mb-3">
+                  <tr key={application.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-4">
+                      <input
+                        type="checkbox"
+                        checked={selectedApplications.includes(application.id)}
+                        onChange={() => handleSelectApplication(application.id)}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                    </td>
+                    <td className="px-6 py-4">
                       <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedApplications.includes(application.id)}
-                          onChange={() => handleSelectApplication(application.id)}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1"
-                        />
-                        <div className="flex items-center">
-                          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-2">
-                            <User className="w-4 h-4 text-gray-400" />
+                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                          <User className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {application.user?.name || application.userName || '未知用户'}
                           </div>
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {application.user?.name || application.userName || '未知用户'}
-                            </div>
-                            <div className="text-xs text-gray-500 flex items-center">
-                              <Phone className="w-3 h-3 mr-1" />
-                              {application.user?.phone || application.userPhone || '未提供'}
-                            </div>
+                          <div className="text-sm text-gray-500 flex items-center">
+                            <Phone className="w-3 h-3 mr-1" />
+                            {application.user?.phone || application.userPhone || '未提供'}
                           </div>
                         </div>
                       </div>
-                      {getStatusBadge(application.status)}
-                    </div>
-                    
-                    <div className="mb-3">
-                      <div className="text-sm font-medium text-gray-900 mb-1">
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-gray-900">
                         {application.trial?.title || application.trialTitle || '未知试验'}
                       </div>
                       {application.trial?.hospital && (
@@ -349,18 +362,21 @@ const ApplicationManagement = () => {
                           {application.trial.hospital}
                         </div>
                       )}
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-gray-500 flex items-center">
+                    </td>
+                    <td className="px-6 py-4">
+                      {getStatusBadge(application.status)}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-500 flex items-center">
                         <Calendar className="w-3 h-3 mr-1" />
                         {application.createdAt ? new Date(application.createdAt).toLocaleDateString() : '-'}
                       </div>
-                      
-                      <div className="flex items-center space-x-2">
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end space-x-2">
                         <button
                           onClick={() => handleViewDetail(application)}
-                          className="text-blue-600 hover:text-blue-700 p-1"
+                          className="text-blue-600 hover:text-blue-700"
                           title="查看详情"
                         >
                           <Eye className="w-4 h-4" />
@@ -370,7 +386,7 @@ const ApplicationManagement = () => {
                         <div className="relative status-menu">
                           <button
                             onClick={() => setShowStatusMenu(showStatusMenu === application.id ? null : application.id)}
-                            className="text-gray-600 hover:text-gray-700 flex items-center p-1"
+                            className="text-gray-600 hover:text-gray-700 flex items-center"
                             title="更改状态"
                           >
                             <Edit className="w-4 h-4" />
@@ -403,14 +419,14 @@ const ApplicationManagement = () => {
                           <>
                             <button
                               onClick={() => handleUpdateStatus(application.id, 'approved')}
-                              className="text-green-600 hover:text-green-700 p-1"
+                              className="text-green-600 hover:text-green-700"
                               title="快速通过"
                             >
                               <Check className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleUpdateStatus(application.id, 'rejected')}
-                              className="text-red-600 hover:text-red-700 p-1"
+                              className="text-red-600 hover:text-red-700"
                               title="快速拒绝"
                             >
                               <X className="w-4 h-4" />
@@ -418,208 +434,63 @@ const ApplicationManagement = () => {
                           </>
                         )}
                       </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 桌面端表格布局 */}
-            <div className="hidden lg:block overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left">
-                      <input
-                        type="checkbox"
-                        checked={selectAll}
-                        onChange={handleSelectAll}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      申请人信息
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      试验项目
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      状态
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      申请时间
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      操作
-                    </th>
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredApplications.map((application) => (
-                    <tr key={application.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-4">
-                        <input
-                          type="checkbox"
-                          checked={selectedApplications.includes(application.id)}
-                          onChange={() => handleSelectApplication(application.id)}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                            <User className="w-5 h-5 text-gray-400" />
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {application.user?.name || application.userName || '未知用户'}
-                            </div>
-                            <div className="text-sm text-gray-500 flex items-center">
-                              <Phone className="w-3 h-3 mr-1" />
-                              {application.user?.phone || application.userPhone || '未提供'}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {application.trial?.title || application.trialTitle || '未知试验'}
-                        </div>
-                        {application.trial?.hospital && (
-                          <div className="text-xs text-gray-500">
-                            {application.trial.hospital}
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        {getStatusBadge(application.status)}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-gray-500 flex items-center">
-                          <Calendar className="w-3 h-3 mr-1" />
-                          {application.createdAt ? new Date(application.createdAt).toLocaleDateString() : '-'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex justify-end space-x-2">
-                          <button
-                            onClick={() => handleViewDetail(application)}
-                            className="text-blue-600 hover:text-blue-700"
-                            title="查看详情"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          
-                          {/* 状态更改下拉菜单 */}
-                          <div className="relative status-menu">
-                            <button
-                              onClick={() => setShowStatusMenu(showStatusMenu === application.id ? null : application.id)}
-                              className="text-gray-600 hover:text-gray-700 flex items-center"
-                              title="更改状态"
-                            >
-                              <Edit className="w-4 h-4" />
-                              <ChevronDown className="w-3 h-3 ml-1" />
-                            </button>
-                            
-                            {showStatusMenu === application.id && (
-                              <div className="absolute right-0 top-full mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                                {statusOptions.map((option) => (
-                                  <button
-                                    key={option.value}
-                                    onClick={() => handleStatusChange(application.id, option.value)}
-                                    className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${option.color} ${
-                                      application.status === option.value ? 'bg-gray-50 font-medium' : ''
-                                    }`}
-                                    disabled={application.status === option.value}
-                                  >
-                                    {option.label}
-                                    {application.status === option.value && (
-                                      <span className="ml-1 text-xs text-gray-500">(当前)</span>
-                                    )}
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-
-                          {/* 快速操作按钮（仅对待审核状态显示） */}
-                          {application.status === 'pending' && (
-                            <>
-                              <button
-                                onClick={() => handleUpdateStatus(application.id, 'approved')}
-                                className="text-green-600 hover:text-green-700"
-                                title="快速通过"
-                              >
-                                <Check className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => handleUpdateStatus(application.id, 'rejected')}
-                                className="text-red-600 hover:text-red-700"
-                                title="快速拒绝"
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {/* 申请详情模态框 */}
       {showDetail && selectedApplication && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900">申请详情</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">申请详情</h3>
                 <button
                   onClick={() => setShowDetail(false)}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
               
-              <div className="space-y-4 sm:space-y-6">
+              <div className="space-y-6">
                 {/* 基本信息 */}
                 <div>
-                  <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">申请人基本信息</h4>
-                  <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">申请人基本信息</h4>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="flex items-center">
-                      <User className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-2 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm truncate">{selectedApplication.name || selectedApplication.user?.name || '未知用户'}</span>
+                      <User className="w-4 h-4 text-gray-400 mr-2" />
+                        <span className="text-sm">{selectedApplication.name || selectedApplication.user?.name || '未知用户'}</span>
                     </div>
                     <div className="flex items-center">
-                      <Phone className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-2 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm">{selectedApplication.phone || selectedApplication.user?.phone || '未提供'}</span>
+                      <Phone className="w-4 h-4 text-gray-400 mr-2" />
+                        <span className="text-sm">{selectedApplication.phone || selectedApplication.user?.phone || '未提供'}</span>
                       </div>
                       <div className="flex items-center">
-                        <Mail className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-2 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm truncate">{selectedApplication.user?.email || '未提供'}</span>
+                        <Mail className="w-4 h-4 text-gray-400 mr-2" />
+                        <span className="text-sm">{selectedApplication.user?.email || '未提供'}</span>
                       </div>
                       <div className="flex items-center">
-                        <span className="text-gray-400 mr-2 text-xs sm:text-sm flex-shrink-0">身份证:</span>
-                        <span className="text-xs sm:text-sm font-mono truncate">{selectedApplication.idCard || '未提供'}</span>
+                        <span className="text-gray-400 mr-2 text-sm">身份证:</span>
+                        <span className="text-sm font-mono">{selectedApplication.idCard || '未提供'}</span>
                       </div>
                       <div className="flex items-center">
-                        <span className="text-gray-400 mr-2 text-xs sm:text-sm flex-shrink-0">性别:</span>
-                        <span className="text-xs sm:text-sm">{selectedApplication.gender || '未提供'}</span>
+                        <span className="text-gray-400 mr-2 text-sm">性别:</span>
+                        <span className="text-sm">{selectedApplication.gender || '未提供'}</span>
                       </div>
                       <div className="flex items-center">
-                        <span className="text-gray-400 mr-2 text-xs sm:text-sm flex-shrink-0">年龄:</span>
-                        <span className="text-xs sm:text-sm">{selectedApplication.age || '未提供'}岁</span>
+                        <span className="text-gray-400 mr-2 text-sm">年龄:</span>
+                        <span className="text-sm">{selectedApplication.age || '未提供'}岁</span>
                       </div>
-                      <div className="flex items-center sm:col-span-2">
-                        <span className="text-gray-400 mr-2 text-xs sm:text-sm flex-shrink-0">出生日期:</span>
-                        <span className="text-xs sm:text-sm">{selectedApplication.birthday || '未提供'}</span>
+                      <div className="flex items-center">
+                        <span className="text-gray-400 mr-2 text-sm">出生日期:</span>
+                        <span className="text-sm">{selectedApplication.birthday || '未提供'}</span>
                       </div>
                     </div>
                   </div>
@@ -627,27 +498,27 @@ const ApplicationManagement = () => {
 
                 {/* 推荐者信息 */}
                 <div>
-                  <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">推荐信息</h4>
-                  <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                    <div className="flex items-start">
-                      <UserCheck className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2 sm:mr-3 flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0 flex-1">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">推荐信息</h4>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="flex items-center">
+                      <UserCheck className="w-5 h-5 text-blue-500 mr-3" />
+                      <div>
                         {selectedApplication.referrer ? (
                           <div>
-                            <div className="text-xs sm:text-sm font-medium text-blue-900">
+                            <div className="text-sm font-medium text-blue-900">
                               推荐者: {selectedApplication.referrer.name}
                             </div>
                             <div className="text-xs text-blue-700">
                               联系方式: {selectedApplication.referrer.phone}
                             </div>
                             {selectedApplication.referrer.email && (
-                              <div className="text-xs text-blue-600 truncate">
+                              <div className="text-xs text-blue-600">
                                 邮箱: {selectedApplication.referrer.email}
                               </div>
                             )}
                           </div>
                         ) : (
-                          <div className="text-xs sm:text-sm text-gray-600">
+                          <div className="text-sm text-gray-600">
                             <span className="font-medium text-green-700">本人报名</span>
                             <span className="text-xs text-gray-500 ml-2">无推荐者</span>
                           </div>
@@ -659,20 +530,20 @@ const ApplicationManagement = () => {
 
                 {/* 身体信息 */}
                 <div>
-                  <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">身体信息</h4>
-                  <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                    <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">身体信息</h4>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="text-center">
                         <div className="text-xs text-gray-500">身高</div>
-                        <div className="text-sm sm:text-lg font-semibold text-blue-600">{selectedApplication.height || '-'}cm</div>
+                        <div className="text-lg font-semibold text-blue-600">{selectedApplication.height || '-'}cm</div>
                       </div>
                       <div className="text-center">
                         <div className="text-xs text-gray-500">体重</div>
-                        <div className="text-sm sm:text-lg font-semibold text-green-600">{selectedApplication.weight || '-'}kg</div>
+                        <div className="text-lg font-semibold text-green-600">{selectedApplication.weight || '-'}kg</div>
                       </div>
                       <div className="text-center">
                         <div className="text-xs text-gray-500">BMI</div>
-                        <div className="text-sm sm:text-lg font-semibold text-purple-600">{selectedApplication.bmi || '-'}</div>
+                        <div className="text-lg font-semibold text-purple-600">{selectedApplication.bmi || '-'}</div>
                       </div>
                     </div>
                   </div>
@@ -680,11 +551,11 @@ const ApplicationManagement = () => {
 
                 {/* 医疗信息 */}
                 <div>
-                  <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">医疗信息</h4>
-                  <div className="bg-gray-50 rounded-lg p-3 sm:p-4 space-y-2 sm:space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-0">
-                      <span className="text-gray-400 text-xs sm:text-sm sm:w-20 flex-shrink-0">吸烟状态:</span>
-                      <span className={`text-xs sm:text-sm px-2 py-1 rounded-full inline-block ${
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">医疗信息</h4>
+                  <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                    <div className="flex items-center">
+                      <span className="text-gray-400 text-sm w-20">吸烟状态:</span>
+                      <span className={`text-sm px-2 py-1 rounded-full ${
                         selectedApplication.smokingStatus === '不吸烟' ? 'bg-green-100 text-green-800' :
                         selectedApplication.smokingStatus === '已戒烟' ? 'bg-blue-100 text-blue-800' :
                         'bg-orange-100 text-orange-800'
@@ -695,10 +566,10 @@ const ApplicationManagement = () => {
                     
                     {selectedApplication.diseases && selectedApplication.diseases.length > 0 && (
                       <div>
-                        <span className="text-gray-400 text-xs sm:text-sm">疾病史:</span>
+                        <span className="text-gray-400 text-sm">疾病史:</span>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {selectedApplication.diseases.map((disease, index) => (
-                            <span key={index} className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-red-100 text-red-800 text-xs rounded-full">
+                            <span key={index} className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">
                               {disease}
                             </span>
                           ))}
@@ -708,22 +579,22 @@ const ApplicationManagement = () => {
                     
                     {selectedApplication.medicalHistory && (
                       <div>
-                        <span className="text-gray-400 text-xs sm:text-sm">既往病史:</span>
-                        <p className="text-xs sm:text-sm mt-1 bg-white p-2 sm:p-3 rounded border-l-4 border-blue-400">{selectedApplication.medicalHistory}</p>
+                        <span className="text-gray-400 text-sm">既往病史:</span>
+                        <p className="text-sm mt-1 bg-white p-3 rounded border-l-4 border-blue-400">{selectedApplication.medicalHistory}</p>
                       </div>
                     )}
                     
                     {selectedApplication.currentMedications && (
                       <div>
-                        <span className="text-gray-400 text-xs sm:text-sm">当前用药:</span>
-                        <p className="text-xs sm:text-sm mt-1 bg-white p-2 sm:p-3 rounded border-l-4 border-green-400">{selectedApplication.currentMedications}</p>
+                        <span className="text-gray-400 text-sm">当前用药:</span>
+                        <p className="text-sm mt-1 bg-white p-3 rounded border-l-4 border-green-400">{selectedApplication.currentMedications}</p>
                       </div>
                     )}
                     
                     {selectedApplication.allergies && (
                       <div>
-                        <span className="text-gray-400 text-xs sm:text-sm">过敏史:</span>
-                        <p className="text-xs sm:text-sm mt-1 bg-white p-2 sm:p-3 rounded border-l-4 border-red-400">{selectedApplication.allergies}</p>
+                        <span className="text-gray-400 text-sm">过敏史:</span>
+                        <p className="text-sm mt-1 bg-white p-3 rounded border-l-4 border-red-400">{selectedApplication.allergies}</p>
                       </div>
                     )}
                   </div>
